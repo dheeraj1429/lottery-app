@@ -4,4 +4,4 @@
 **/*.env.local
 **/*.env.development
 **/*.build
-DS_Store
+/DS_Store

@@ -1,0 +1,16 @@
+.main_div {
+   cursor: pointer;
+   padding: 0.4rem 1rem;
+   transition: all 0.2s ease;
+   border-radius: 5px;
+   @apply flex items-center space-x-1;
+}
+
+.icon_div {
+   width: 22px;
+   @apply flex items-center text-gray-500;
+}
+
+.icon_div svg {
+   width: 20px;
+}
