@@ -1,6 +1,18 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { AvatarImageInterface, AvatarInterface } from '.';
+
+export interface Avatar {
+   className?: string;
+   children?: React.ReactNode;
+}
+export interface AvatarInterface
+   extends Avatar,
+      React.HTMLAttributes<HTMLDivElement> {}
+export interface AvatarImageInterface
+   extends Avatar,
+      React.ImgHTMLAttributes<HTMLImageElement> {
+   alt: string;
+}
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarInterface>(
    ({ className, children, ...props }, ref) => {

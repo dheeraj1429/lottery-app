@@ -3,7 +3,11 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { SheetPortalInterface } from '.';
+
+export interface SheetPortalInterface
+   extends React.HTMLAttributes<HTMLDivElement> {
+   children?: React.ReactNode;
+}
 
 const SheetPortal = React.forwardRef<HTMLDivElement, SheetPortalInterface>(
    ({ className, children, ...props }, ref): React.JSX.Element => {

@@ -17,3 +17,18 @@
    --light-green-cl: #439715;
    --light-gray: #525252;
 }
+
+td {
+   padding: 1rem;
+   font-size: 14px;
+   font-weight: 400;
+   color: var(--smooth-gray-lg-cl);
+}
+
+th {
+   font-size: 14px;
+   text-align: start;
+   font-weight: 500;
+   color: var(--smooth-gray-lg-cl);
+   padding: 1rem;
+}

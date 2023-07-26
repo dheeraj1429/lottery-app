@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import SidebarTab from '../../sidebarTab/sidebarTab';
 import IconList from '../../iconList/iconList';

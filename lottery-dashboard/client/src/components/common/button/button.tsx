@@ -1,7 +1,13 @@
 import React, { forwardRef } from 'react';
 import classes from './button.module.css';
-import { ButtonProps } from '.';
 import CircularProgress from '@mui/material/CircularProgress';
+
+export interface ButtonProps
+   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+   isLoading?: boolean;
+   variation?: 'login-button' | 'deposit-btn' | 'wallet_button';
+   children: React.ReactNode;
+}
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
    (

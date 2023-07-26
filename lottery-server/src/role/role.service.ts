@@ -121,7 +121,9 @@ export class RoleService {
             });
             return res.status(HttpStatus.OK).json(response);
          } else {
-            const response = responseObject(false, true, 'No changes');
+            const response = responseObject(false, true, {
+               message: 'No Change',
+            });
             return res.status(HttpStatus.BAD_REQUEST).json(response);
          }
       } else {

@@ -11,13 +11,25 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Props } from '.';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
-import { createNewRoleHandler } from '@/redux/features/roles/rolesAction';
+import {
+   createNewRoleHandler,
+   getSingleRole,
+   updateRole,
+} from '@/redux/features/roles/rolesAction';
 import {
    createNewRoleLoadingSelector,
    createNewRoleErrorSelector,
+   singleRoleSelector,
+   singleRoleErrorSelector,
+   updateRoleLoadingSelector,
+   updateRoleInfoSelector,
 } from './roles.selector';
 import Error from '@/components/common/error/error';
-import { removeRolesErrors } from '@/redux/features/roles/rolesSlice';
+import {
+   removeRolesErrors,
+   removeUpdateRoleInfo,
+} from '@/redux/features/roles/rolesSlice';
+import withRoles from '@/hoc/withRoles';
 
 const roles = [
    { value: true, label: 'Yes' },
@@ -29,8 +41,9 @@ const schema = yup.object({
    isDefault: yup.boolean().required(),
 });
 
-export default function Page({ params }: { params: { slug: string } }) {
+function Page({ params }: { params: { slug: string } }) {
    const {
+      setValue,
       handleSubmit,
       formState: { errors },
       control,
@@ -46,16 +59,40 @@ export default function Page({ params }: { params: { slug: string } }) {
 
    const createNewRoleLoading = useAppSelector(createNewRoleLoadingSelector);
    const createNewRoleError = useAppSelector(createNewRoleErrorSelector);
+   const singleRoleError = useAppSelector(singleRoleErrorSelector);
+   const singleRole = useAppSelector(singleRoleSelector);
+   const updateRoleLoading = useAppSelector(updateRoleLoadingSelector);
+   const updateRoleInfo = useAppSelector(updateRoleInfoSelector);
 
    const submitHandler = function (data: Props) {
-      dispatch(createNewRoleHandler(data));
+      const slug = params.slug;
+      if (slug === 'create') {
+         dispatch(createNewRoleHandler(data));
+      } else {
+         dispatch(updateRole({ ...data, roleId: slug }));
+      }
    };
 
    useEffect(() => {
+      const slug = params.slug;
+      if (!!slug) {
+         if (slug !== 'create') {
+            dispatch(getSingleRole({ roleId: slug }));
+         }
+      }
+
       return () => {
          dispatch(removeRolesErrors());
+         dispatch(removeUpdateRoleInfo());
       };
    }, []);
+
+   useEffect(() => {
+      if (!!singleRole && singleRole?.success) {
+         setValue('isDefault', singleRole?.item?.isDefault);
+         setValue('roleName', singleRole?.item?.roleName);
+      }
+   }, [singleRole]);
 
    return (
       <div>
@@ -122,15 +159,29 @@ export default function Page({ params }: { params: { slug: string } }) {
                   </div>
                   <div>
                      <Button
-                        isLoading={createNewRoleLoading}
+                        isLoading={
+                           !!params?.slug && params?.slug !== 'create'
+                              ? updateRoleLoading
+                              : createNewRoleLoading
+                        }
                         type="submit"
                         variation="login-button"
                      >
-                        Save
+                        {!!params?.slug && params?.slug !== 'create'
+                           ? 'Update'
+                           : 'Save'}
                      </Button>
                   </div>
+                  {!!updateRoleInfo && updateRoleInfo?.message && (
+                     <p className="text-sm mt-2 text-gray-500">
+                        {updateRoleInfo?.message}
+                     </p>
+                  )}
                   {!!createNewRoleError && createNewRoleError?.message && (
                      <Error data={createNewRoleError?.message} />
+                  )}
+                  {!!singleRoleError && singleRoleError?.message && (
+                     <Error data={singleRoleError?.message} />
                   )}
                </Box>
             </form>
@@ -138,3 +189,5 @@ export default function Page({ params }: { params: { slug: string } }) {
       </div>
    );
 }
+
+export default withRoles(Page, ['admin']);
