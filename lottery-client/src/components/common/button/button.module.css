@@ -1,0 +1,42 @@
+.login-button {
+   padding: 0.4rem 2rem;
+   @apply bg-blue-600;
+   border-radius: 8px;
+   color: #fff;
+}
+.deposit-btn {
+   padding: 0.8rem 1.3rem;
+   font-size: 15px;
+   background-color: #fff;
+   @apply shadow-md;
+   color: #999;
+   font-weight: 600;
+   border-radius: 5px;
+}
+.wallet_button {
+   padding: 0.8rem 2rem;
+   color: #fff;
+   background-image: conic-gradient(
+      from 1turn,
+      rgb(132, 71, 246),
+      rgb(86, 23, 203)
+   );
+}
+.tit_btn {
+   display: flex;
+   flex-direction: column;
+   -webkit-box-pack: center;
+   justify-content: center;
+   -webkit-box-align: center;
+   align-items: center;
+   padding: 0.6rem 1rem;
+   background: conic-gradient(
+      from 132.16deg at 49.69% 53%,
+      rgb(255, 204, 96) 0deg,
+      rgb(255, 173, 0) 230.62deg,
+      rgb(244, 166, 0) 360deg
+   );
+   border-radius: 4px;
+   color: var(--main-cl);
+   font-size: 15px;
+}
