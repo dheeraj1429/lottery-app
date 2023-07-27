@@ -8,7 +8,7 @@ export class AccountConfig {
    @Prop({ type: mongoose.Types.ObjectId, ref: 'auth', required: true })
    userId: ObjectId;
 
-   @Prop()
+   @Prop({ required: true })
    clientId: string;
 
    @Prop({ default: false })

@@ -3,7 +3,9 @@ import {
    CreateNewRolePayload,
    CreateNewRolesResponseInterface,
    GetRolesInterface,
+   GetRolesWithIdPayload,
    GetSingleRoleInterface,
+   RolesWithIdsInterface,
    SingleRoleApiPayload,
    UpdateSingleRole,
 } from '.';
@@ -83,6 +85,25 @@ export const updateRole = createAsyncThunk<
       const response = await axiosInstance.patch(
          '/roles/update-single-role',
          data,
+      );
+      return response.data;
+   } catch (err) {
+      const error: ErrorResponseType = err as any;
+      if (!error?.response) {
+         throw err;
+      }
+      return rejectWithValue(error?.response?.data);
+   }
+});
+
+export const getRolesWithId = createAsyncThunk<
+   RolesWithIdsInterface,
+   GetRolesWithIdPayload,
+   { rejectValue: KnownError }
+>('roles/getRolesWithId', async ({ userId }, { rejectWithValue }) => {
+   try {
+      const response = await axiosInstance.get(
+         `/roles/get-roles-with-id?userId=${userId}`,
       );
       return response.data;
    } catch (err) {

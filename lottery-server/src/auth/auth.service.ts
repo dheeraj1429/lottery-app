@@ -8,6 +8,7 @@ import { Auth } from './schemas/auth.schema';
 import mongoose, { Model } from 'mongoose';
 import { responseObject } from 'src/utils/helper';
 import { AccountConfig } from 'src/account-config/schemas/account-config.schema';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -145,6 +146,7 @@ export class AuthService {
       // create user account config also.
       const accountConfig = await new this.accountConfigModel({
          userId: userId,
+         clientId: uuidv4(),
       }).save();
 
       if (!accountConfig) {

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { RoleModule } from './role/role.module';
 import { AccountConfigModule } from './account-config/account-config.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
    imports: [
@@ -22,6 +23,8 @@ import { AccountConfigModule } from './account-config/account-config.module';
       RoleModule,
 
       AccountConfigModule,
+
+      AccountsModule,
    ],
 
    controllers: [],

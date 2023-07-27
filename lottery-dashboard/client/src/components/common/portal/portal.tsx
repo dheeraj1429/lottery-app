@@ -16,7 +16,7 @@ const SheetPortal = React.forwardRef<HTMLDivElement, SheetPortalInterface>(
             ref={ref}
             {...props}
             className={cn(
-               'w-full h-full absolute top-0 left-0 flex items-center justify-center',
+               'w-full h-full fixed top-0 left-0 flex items-center justify-center',
                className,
             )}
          >

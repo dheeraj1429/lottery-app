@@ -3,6 +3,7 @@ import { StateProps } from '.';
 import {
    createNewRoleHandler,
    getAllRoles,
+   getRolesWithId,
    getSingleRole,
    updateRole,
 } from './rolesAction';
@@ -19,6 +20,9 @@ const INITALSTATE: StateProps = {
    singleRoleError: null,
    updateRoleInfo: null,
    updateRoleLoading: false,
+   allRolesWithIds: null,
+   allRolesWithIdsLoading: false,
+   allRolesWithIdsError: null,
 };
 
 const rolesSlice = createSlice({
@@ -102,6 +106,23 @@ const rolesSlice = createSlice({
             state.updateRoleInfo = action.payload;
             state.updateRoleLoading = false;
             state.createNewRoleError = null;
+         });
+
+      bulder
+         .addCase(getRolesWithId.pending, (state) => {
+            state.allRolesWithIds = null;
+            state.allRolesWithIdsLoading = true;
+            state.allRolesWithIdsError = null;
+         })
+         .addCase(getRolesWithId.rejected, (state, action) => {
+            state.allRolesWithIds = null;
+            state.allRolesWithIdsLoading = false;
+            state.allRolesWithIdsError = action.payload;
+         })
+         .addCase(getRolesWithId.fulfilled, (state, action) => {
+            state.allRolesWithIds = action.payload;
+            state.allRolesWithIdsLoading = false;
+            state.allRolesWithIdsError = null;
          });
    },
 });

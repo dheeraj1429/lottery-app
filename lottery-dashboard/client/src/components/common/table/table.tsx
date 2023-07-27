@@ -107,22 +107,22 @@ const NextAndPrevButtons = ({
             <div className="_next_prev_buttons_div mt-5 flex justify-end space-x-2">
                <Button
                   className={
-                     disablePrevbtn
+                     !disablePrevbtn
                         ? `${classes['_btn']}`
                         : `${classes['_btn']} ${classes['disable_btn']}`
                   }
-                  onClick={disablePrevbtn ? undefined : prevHandler}
+                  onClick={!disablePrevbtn ? undefined : prevHandler}
                >
                   <NavigateBeforeIcon className="text-gray-500" />
                   <p className="text-sm ms-2 text-gray-800">Prev</p>
                </Button>
                <Button
                   className={
-                     disableNextbtn
+                     !disableNextbtn
                         ? `${classes['_btn']}`
                         : `${classes['_btn']} ${classes['disable_btn']}`
                   }
-                  onClick={disableNextbtn ? undefined : nextHandler}
+                  onClick={!disableNextbtn ? undefined : nextHandler}
                >
                   <p className="text-sm me-2 text-gray-800">Next</p>
                   <NavigateNextIcon className="text-gray-500" />

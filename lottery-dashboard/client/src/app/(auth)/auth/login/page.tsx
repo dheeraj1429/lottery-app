@@ -89,6 +89,7 @@ function Login() {
                               className="w-full"
                               label="Email"
                               variant="outlined"
+                              type="text"
                            />
                         )}
                      />
@@ -109,6 +110,7 @@ function Login() {
                               label="Password"
                               className="w-full"
                               variant="outlined"
+                              type="password"
                            />
                         )}
                      />

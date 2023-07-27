@@ -23,6 +23,12 @@ export interface GetSingleRoleInterface extends ApiResponseInterface {
 export interface UpdateSingleRole extends CreateNewRolePayload {
    roleId: string;
 }
+export interface RolesWithIdsInterface extends ApiResponseInterface {
+   items: { roleName: string; _id: string }[];
+}
+export interface GetRolesWithIdPayload {
+   userId: string;
+}
 export interface StateProps {
    createNewRoleInfo: CreateNewRolesResponseInterface | null;
    createNewRoleLoading: boolean;
@@ -35,4 +41,7 @@ export interface StateProps {
    singleRoleError: ErrorType;
    updateRoleInfo: CreateNewRolesResponseInterface | null;
    updateRoleLoading: boolean;
+   allRolesWithIds: RolesWithIdsInterface | null;
+   allRolesWithIdsLoading: boolean;
+   allRolesWithIdsError: ErrorType;
 }

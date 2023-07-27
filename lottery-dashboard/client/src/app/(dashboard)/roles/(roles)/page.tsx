@@ -44,7 +44,7 @@ function RolesList() {
    const allRolesLoading = useAppSelector(allRolesLoadingSelector);
    const allRolesError = useAppSelector(allRolesErrorSelector);
 
-   const createNewAccount = function () {
+   const createNewRole = function () {
       router.push('/roles/create');
    };
 
@@ -64,9 +64,7 @@ function RolesList() {
             }
             menu={true}
             innerProps={
-               <MenuItem onClick={createNewAccount}>
-                  Create new account
-               </MenuItem>
+               <MenuItem onClick={createNewRole}>Create new role</MenuItem>
             }
          />
          <div>
