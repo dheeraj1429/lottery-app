@@ -1,0 +1,10 @@
+.pop_wh {
+   width: 470px;
+}
+
+.content_div {
+   width: 100%;
+   padding: 1rem;
+   height: 650px;
+   overflow: scroll;
+}

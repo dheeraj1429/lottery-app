@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+   --overlay-background: #00000088;
+   --main-cl: #fff;
+   --dark-cl: #000;
+   --gray-cl: #e2e1e1e1;
+   --light-smooth-gray: #ececec;
+   --gray: #777;
+   --blue-cl: #3f7ce6;
+   --error: rgb(230, 63, 63);
+   --dark-gray: #2f2d2b;
+   --overlay-cl: #00000088;
+   --smooth-gray: #d9d9d9;
+   --light-green-cl: #439715;
+   --light-gray: #525252;
+}
+
+td {
+   padding: 1rem;
+   font-size: 14px;
+   font-weight: 400;
+   color: var(--smooth-gray-lg-cl);
+}
+
+th {
+   font-size: 14px;
+   text-align: start;
+   font-weight: 500;
+   color: var(--smooth-gray-lg-cl);
+   padding: 1rem;
+}
+
+.ant-switch {
+   background-color: var(--light-gray);
+}

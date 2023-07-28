@@ -1,0 +1,33 @@
+.main_div {
+   width: 100%;
+   overflow: hidden;
+   transition: all 0.3s ease;
+   max-height: 40px;
+   border-bottom: 1px solid var(--light-smooth-gray);
+}
+
+.active_tb {
+   max-height: 500px;
+}
+
+.content_div {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   cursor: pointer;
+   padding: 0.5rem 1rem;
+}
+
+.ar-right {
+   rotate: -90deg;
+   transition: all 0.2s ease;
+}
+
+.down {
+   rotate: 0deg;
+}
+
+.innter_item {
+   padding: 0 1rem;
+   margin-bottom: 1rem;
+}

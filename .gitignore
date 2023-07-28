@@ -1,0 +1,7 @@
+**/*node_modules
+**/*.environment
+**/*.env
+**/*.env.local
+**/*.env.development
+**/*.build
+/DS_Store

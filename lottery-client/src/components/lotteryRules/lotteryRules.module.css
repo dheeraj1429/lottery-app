@@ -1,0 +1,12 @@
+.rules_div {
+   width: 100%;
+   background-color: var(--smooth-gray-md-cl);
+   padding: 1rem;
+   border-radius: 2px;
+}
+
+.table_div {
+   background-color: var(--dark-table-cl);
+   width: 100%;
+   overflow: scroll;
+}

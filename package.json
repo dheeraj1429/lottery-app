@@ -1,0 +1,23 @@
+{
+   "name": "lottery-app",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "ds-client": "npm run dev --prefix ./lottery-dashboard/client",
+      "server": "npm run start:dev --prefix ./lottery-server",
+      "client": "npm run dev --prefix ./lottery-client",
+      "api-server": "npm run dev --prefix ./demo-api-server"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/dheeraj1429/lottery-app.git"
+   },
+   "author": "",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/dheeraj1429/lottery-app/issues"
+   },
+   "homepage": "https://github.com/dheeraj1429/lottery-app#readme"
+}

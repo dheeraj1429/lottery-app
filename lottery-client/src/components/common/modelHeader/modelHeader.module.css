@@ -1,0 +1,22 @@
+.main_div {
+   padding: 1rem;
+   background-color: var(--model-bg-cl);
+}
+
+.main_div p {
+   font-size: 17px;
+   color: var(--main-cl);
+   font-weight: 600;
+}
+
+.main_div svg {
+   font-size: 22px;
+   color: var(--smooth-gray-cl);
+   cursor: pointer;
+}
+
+@media (max-width: 600px) {
+   .main_div p {
+      font-size: 14px;
+   }
+}
