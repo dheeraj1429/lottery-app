@@ -1,10 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row } from './lotteryData';
 import classes from './lotteryRules.module.css';
+import { useAppDispatch } from '@/redux/store/hooks';
+import { setUser } from '@/redux/features/client/userSlice';
+import { InterigationApiResponse } from '@/types/interface';
 
-function LotteryRules() {
+function LotteryRules({ data }: { data: InterigationApiResponse }) {
+   const dispatch = useAppDispatch();
+
+   useEffect(() => {
+      dispatch(setUser(data));
+   }, []);
+
    return (
       <div className="mt-4">
          <h1 className="text-gray-100 font-semibold text-lg md:text-xl">

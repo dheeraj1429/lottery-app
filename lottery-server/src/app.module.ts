@@ -6,6 +6,10 @@ import { JwtTokenModule } from './jwt-token/jwt-token.module';
 import { RoleModule } from './role/role.module';
 import { AccountConfigModule } from './account-config/account-config.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { ClientUtilsModule } from './client-utils/client-utils.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './tasks/tasks.module';
+import { LuckyDrawModule } from './lucky-draw/lucky-draw.module';
 
 @Module({
    imports: [
@@ -25,6 +29,14 @@ import { AccountsModule } from './accounts/accounts.module';
       AccountConfigModule,
 
       AccountsModule,
+
+      ClientUtilsModule,
+
+      ScheduleModule.forRoot(),
+
+      TasksModule,
+
+      LuckyDrawModule,
    ],
 
    controllers: [],

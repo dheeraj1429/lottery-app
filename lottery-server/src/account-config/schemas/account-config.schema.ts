@@ -13,6 +13,9 @@ export class AccountConfig {
 
    @Prop({ default: false })
    accountEnable: boolean;
+
+   @Prop()
+   userInfoApi: string;
 }
 
 export const AccountConfigSchema = SchemaFactory.createForClass(AccountConfig);

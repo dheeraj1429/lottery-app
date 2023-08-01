@@ -7,6 +7,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import useRole from '@/hooks/useRole';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 
 function Sidebar() {
    const { isAdmin, isSubAdmin } = useRole();
@@ -32,6 +33,13 @@ function Sidebar() {
                      link={'/account'}
                   />
                </>
+            ) : null}
+            {isSubAdmin ? (
+               <IconList
+                  heading={'Configurations'}
+                  icon={<ToggleOffIcon />}
+                  link={'/config'}
+               />
             ) : null}
          </SidebarTab>
       </div>

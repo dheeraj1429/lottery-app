@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { StoreProvider } from '@/providers/storeProvider';
 import MuiThemProvider from '@/providers/muiThemProvider';
 import { Toaster } from 'react-hot-toast';
+import { AntdThemeProvider } from '@/providers/antdThemProvider';
 
 export const metadata: Metadata = {
    title: 'Create Next App',
@@ -19,7 +20,9 @@ export default function RootLayout({
          <body>
             <StoreProvider>
                <Toaster />
-               <MuiThemProvider>{children}</MuiThemProvider>
+               <MuiThemProvider>
+                  <AntdThemeProvider>{children}</AntdThemeProvider>
+               </MuiThemProvider>
             </StoreProvider>
          </body>
       </html>

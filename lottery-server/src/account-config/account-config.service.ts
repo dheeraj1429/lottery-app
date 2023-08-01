@@ -22,7 +22,7 @@ export class AccountConfigService {
       // find user config details
       const userConfigInfo = await this.accountConfig.findOne(
          { userId: new mongoose.Types.ObjectId(userId) },
-         { clientId: 1 },
+         { clientId: 1, userInfoApi: 1 },
       );
 
       if (!userConfigInfo) {
@@ -40,7 +40,7 @@ export class AccountConfigService {
    }
 
    async updateUserAccountConfig(query: AccountConfigUpdateDto, res: Response) {
-      const { clientId, userId } = query;
+      const { clientId, userInfoApi, userId } = query;
 
       // find the client id or the user id is exists or not.
       const userConfig = await this.accountConfig.findOne({
@@ -54,9 +54,15 @@ export class AccountConfigService {
          return res.status(HttpStatus.NOT_FOUND).json(err);
       }
 
-      const updateAccountConfig = await this.accountConfig.updateOne({
-         $and: [{ userId: new mongoose.Types.ObjectId(userId) }, { clientId }],
-      });
+      const updateAccountConfig = await this.accountConfig.updateOne(
+         {
+            $and: [
+               { userId: new mongoose.Types.ObjectId(userId) },
+               { clientId },
+            ],
+         },
+         { $set: { userInfoApi } },
+      );
 
       if (updateAccountConfig.modifiedCount) {
          const response = responseObject(true, false, {

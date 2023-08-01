@@ -17,6 +17,7 @@ import {
    updateRole,
 } from '@/redux/features/roles/rolesAction';
 import {
+   createNewRoleInfoSelector,
    createNewRoleLoadingSelector,
    createNewRoleErrorSelector,
    singleRoleSelector,
@@ -63,6 +64,7 @@ function Page({ params }: { params: { slug: string } }) {
    const singleRole = useAppSelector(singleRoleSelector);
    const updateRoleLoading = useAppSelector(updateRoleLoadingSelector);
    const updateRoleInfo = useAppSelector(updateRoleInfoSelector);
+   const createNewRoleInfo = useAppSelector(createNewRoleInfoSelector);
 
    const submitHandler = function (data: Props) {
       const slug = params.slug;
@@ -172,11 +174,12 @@ function Page({ params }: { params: { slug: string } }) {
                            : 'Save'}
                      </Button>
                   </div>
-                  {!!updateRoleInfo && updateRoleInfo?.message && (
+                  {(!!updateRoleInfo && updateRoleInfo?.message) ||
+                  (!!createNewRoleInfo && createNewRoleInfo?.message) ? (
                      <p className="text-sm mt-2 text-gray-500">
-                        {updateRoleInfo?.message}
+                        {updateRoleInfo?.message || createNewRoleInfo?.message}
                      </p>
-                  )}
+                  ) : null}
                   {!!createNewRoleError && createNewRoleError?.message && (
                      <Error data={createNewRoleError?.message} />
                   )}

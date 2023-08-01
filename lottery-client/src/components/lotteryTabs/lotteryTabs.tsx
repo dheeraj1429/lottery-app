@@ -9,6 +9,7 @@ import {
    TabsTrigger,
 } from '../common/tabs/tabs';
 import NoData from '../common/noData/noData';
+import MyLotteryTickets from '../myLotteryTickets/myLotteryTickets';
 
 const buttonsAr = [
    { name: 'My Ticket' },
@@ -41,9 +42,14 @@ function LotteryTabs() {
                   </TabsTrigger>
                ))}
             </TabsList>
-            <TabsContent className="p-2 bg-zinc-800 mt-2">
+            {ShowTab === 'my_ticket' && (
+               <TabsContent className="p-2 bg-zinc-800 mt-2">
+                  <MyLotteryTickets />
+               </TabsContent>
+            )}
+            {/* <TabsContent className="p-2 bg-zinc-800 mt-2">
                <NoData />
-            </TabsContent>
+            </TabsContent> */}
          </TabContainer>
       </div>
    );

@@ -18,6 +18,13 @@ import {
 import Button from '../common/button/button';
 import LotteryJackpotBalls from '../lotteryJackpotBalls/lotteryJackpotBalls';
 import { toast } from 'react-hot-toast';
+import { useAppSelector } from '@/redux/store/hooks';
+import { userSelector } from './buyLottery.selector';
+
+interface StateProps {
+   numberOfTickets: number;
+   totalCost: string;
+}
 
 const priceOfCurrencyToLottery = 1;
 
@@ -31,9 +38,10 @@ interface BallsRefInterface {
 function BuyLotteryTickets({ close }: { close?: () => void }) {
    const ballsRef = useRef<BallsRefInterface>();
 
-   const { control, getValues, setValue } = useForm({
+   const userInfo = useAppSelector(userSelector);
+
+   const { control, getValues, setValue } = useForm<StateProps>({
       defaultValues: {
-         list: [],
          numberOfTickets: 0,
          totalCost: '0.00000000',
       },
@@ -69,20 +77,56 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
    };
 
    const submitHandler = function () {
-      if (ballsRef?.current) {
-         const { digitsOptionalNumbers, jackpotBallNumber } =
-            ballsRef.current.getState();
+      if (!!userInfo && !!userInfo?.user) {
+         const {
+            message,
+            user: { userId, amountInUsd },
+         } = userInfo;
 
-         if (!!digitsOptionalNumbers && digitsOptionalNumbers?.length < 5) {
-            return toast.error('Please select 5 digits optional balls');
+         if (message !== 'success') {
+            return toast.error('interigation is no longer available');
          }
 
-         if (!jackpotBallNumber) {
-            return toast.error('Jack pot ball is reuqired');
+         if (amountInUsd <= 0) {
+            return toast.error('you have no money');
          }
 
-         console.log('data => ', { digitsOptionalNumbers, jackpotBallNumber });
-         /////////////
+         console.log(amountInUsd);
+
+         if (ballsRef?.current) {
+            const { digitsOptionalNumbers, jackpotBallNumber } =
+               ballsRef.current.getState();
+
+            if (!!digitsOptionalNumbers && digitsOptionalNumbers?.length < 5) {
+               return toast.error('Please select 5 digits optional balls');
+            }
+
+            if (!jackpotBallNumber) {
+               return toast.error('Jack pot ball is reuqired');
+            }
+
+            const numberOfTickets = +getValues('numberOfTickets');
+            const totalCost = getValues('totalCost');
+
+            console.log('totalCost =>', totalCost);
+
+            const userLotteryData = [
+               {
+                  userId,
+                  numberOfTickets,
+                  lotteryPollNumbers: {
+                     luckyNumbers: digitsOptionalNumbers,
+                     jackpotBallNumber,
+                  },
+               },
+            ];
+
+            console.log('data => ', userLotteryData);
+         } else {
+            // user selected the random number options.
+         }
+      } else {
+         toast.error('User information is not available');
       }
    };
 

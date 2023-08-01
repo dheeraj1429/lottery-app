@@ -3,6 +3,11 @@ import { createSelector } from '@reduxjs/toolkit';
 
 const roleReducer = (state: AppState) => state.roles;
 
+export const createNewRoleInfoSelector = createSelector(
+   [roleReducer],
+   roleSlice => roleSlice.createNewRoleInfo
+)
+
 export const createNewRoleLoadingSelector = createSelector(
    [roleReducer],
    (roleSlice) => roleSlice.createNewRoleLoading,
