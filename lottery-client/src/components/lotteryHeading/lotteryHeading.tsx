@@ -8,15 +8,9 @@ import {
    todayLotterySelector,
 } from './lottery.Selector';
 import Error from '../common/error/error';
-import classes from './lotteryPollHeading.module.css';
+import classes from './lotteryHeading.module.css';
 
-function LotteryPollHeadingComponent({
-   gameId,
-   date,
-}: {
-   gameId?: number;
-   date?: Date;
-}) {
+function LotteryHeading({ gameId, date }: { gameId?: number; date?: Date }) {
    const todayLottery = useSelector(todayLotterySelector);
    const todayLotteryLoading = useSelector(todayLotteryLoadingSelector);
    const todayLotteryError = useSelector(todayLotteryErrorSelector);
@@ -74,4 +68,4 @@ function LotteryPollHeadingComponent({
    );
 }
 
-export default LotteryPollHeadingComponent;
+export default LotteryHeading;

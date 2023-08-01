@@ -18,8 +18,9 @@ import {
 import Button from '../common/button/button';
 import LotteryJackpotBalls from '../lotteryJackpotBalls/lotteryJackpotBalls';
 import { toast } from 'react-hot-toast';
-import { useAppSelector } from '@/redux/store/hooks';
-import { userSelector } from './buyLottery.selector';
+import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
+import { userSelector, todayLotterySelector } from './buyLottery.selector';
+import { buyLotteryTickets } from '@/redux/features/luckyDraw/luckyDrawActions';
 
 interface StateProps {
    numberOfTickets: number;
@@ -39,6 +40,8 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
    const ballsRef = useRef<BallsRefInterface>();
 
    const userInfo = useAppSelector(userSelector);
+   const todayLottery = useAppSelector(todayLotterySelector);
+   const dispatch = useAppDispatch();
 
    const { control, getValues, setValue } = useForm<StateProps>({
       defaultValues: {
@@ -82,6 +85,11 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
             message,
             user: { userId, amountInUsd },
          } = userInfo;
+         const gameId = todayLottery?.item?.gameId;
+
+         if (!gameId) {
+            return toast.error('Something worng, Please try again latter.');
+         }
 
          if (message !== 'success') {
             return toast.error('interigation is no longer available');
@@ -108,8 +116,6 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
             const numberOfTickets = +getValues('numberOfTickets');
             const totalCost = getValues('totalCost');
 
-            console.log('totalCost =>', totalCost);
-
             const userLotteryData = [
                {
                   userId,
@@ -121,7 +127,15 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                },
             ];
 
-            console.log('data => ', userLotteryData);
+            dispatch(
+               buyLotteryTickets({
+                  userId,
+                  amount: totalCost,
+                  gameId,
+                  userLotteryData,
+                  isManually: ShowOptions?.isManually,
+               }),
+            );
          } else {
             // user selected the random number options.
          }

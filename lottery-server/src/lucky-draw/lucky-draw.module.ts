@@ -7,6 +7,10 @@ import {
    LotteryGame,
    LotteryGameSchema,
 } from 'src/tasks/schemas/lotteryGame.schema';
+import {
+   LotteryUsers,
+   lotteryUsersSchema,
+} from 'src/tasks/schemas/lotteryUsers.schema';
 
 @Module({
    imports: [
@@ -14,6 +18,7 @@ import {
 
       MongooseModule.forFeature([
          { name: LotteryGame.name, schema: LotteryGameSchema },
+         { name: LotteryUsers.name, schema: lotteryUsersSchema },
       ]),
    ],
 
