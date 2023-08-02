@@ -45,7 +45,7 @@ export interface UserLotteryInterface {
 export interface BuyLotteryTicketsPayload {
    amount: string;
    gameId: number;
-   userLotteryData: UserLotteryInterface[];
+   userLotteryData?: UserLotteryInterface[];
    isManually: boolean;
    numberOfTickets?: number;
    userId: string;

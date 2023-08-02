@@ -90,8 +90,6 @@ export class LuckyDrawService {
            }
          : this.genrateUniqueNumbers(userId, numberOfTickets);
 
-      console.log(tickets);
-
       let findLotterPollAndPlaceTicket = await this.lotteryUsers.updateOne(
          { gameId },
          { $push: { lotteryParticipateUsers: tickets } },

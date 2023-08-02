@@ -21,39 +21,26 @@ import { toast } from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
 import { userSelector, todayLotterySelector } from './buyLottery.selector';
 import { buyLotteryTickets } from '@/redux/features/luckyDraw/luckyDrawActions';
-
-interface StateProps {
-   numberOfTickets: number;
-   totalCost: string;
-}
+import { BallsRefInterface, StateProps, Props } from '.';
 
 const priceOfCurrencyToLottery = 1;
 
-interface BallsRefInterface {
-   getState: () => {
-      digitsOptionalNumbers: number[];
-      jackpotBallNumber: number;
-   };
-}
-
 function BuyLotteryTickets({ close }: { close?: () => void }) {
    const ballsRef = useRef<BallsRefInterface>();
-
-   const userInfo = useAppSelector(userSelector);
-   const todayLottery = useAppSelector(todayLotterySelector);
-   const dispatch = useAppDispatch();
-
-   const { control, getValues, setValue } = useForm<StateProps>({
+   const { control, getValues, setValue } = useForm<Props>({
       defaultValues: {
          numberOfTickets: 0,
          totalCost: '0.00000000',
       },
    });
-
-   const [ShowOptions, setShowOptions] = useState({
+   const [ShowOptions, setShowOptions] = useState<StateProps>({
       isAutomatically: true,
       isManually: false,
    });
+
+   const userInfo = useAppSelector(userSelector);
+   const todayLottery = useAppSelector(todayLotterySelector);
+   const dispatch = useAppDispatch();
 
    const inputChangeHandler = function (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -99,45 +86,58 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
             return toast.error('you have no money');
          }
 
-         console.log(amountInUsd);
+         const totalCost = getValues('totalCost');
+         const numberOfTickets = +getValues('numberOfTickets');
 
-         if (ballsRef?.current) {
-            const { digitsOptionalNumbers, jackpotBallNumber } =
-               ballsRef.current.getState();
+         if (ShowOptions?.isManually) {
+            if (ballsRef?.current) {
+               const { digitsOptionalNumbers, jackpotBallNumber } =
+                  ballsRef.current.getState();
 
-            if (!!digitsOptionalNumbers && digitsOptionalNumbers?.length < 5) {
-               return toast.error('Please select 5 digits optional balls');
-            }
+               if (
+                  !!digitsOptionalNumbers &&
+                  digitsOptionalNumbers?.length < 5
+               ) {
+                  return toast.error('Please select 5 digits optional balls');
+               }
 
-            if (!jackpotBallNumber) {
-               return toast.error('Jack pot ball is reuqired');
-            }
+               if (!jackpotBallNumber) {
+                  return toast.error('Jack pot ball is reuqired');
+               }
 
-            const numberOfTickets = +getValues('numberOfTickets');
-            const totalCost = getValues('totalCost');
-
-            const userLotteryData = [
-               {
-                  userId,
-                  numberOfTickets,
-                  lotteryPollNumbers: {
-                     luckyNumbers: digitsOptionalNumbers,
-                     jackpotBallNumber,
+               const userLotteryData = [
+                  {
+                     userId,
+                     numberOfTickets,
+                     lotteryPollNumbers: {
+                        luckyNumbers: digitsOptionalNumbers,
+                        jackpotBallNumber,
+                     },
                   },
-               },
-            ];
+               ];
 
+               dispatch(
+                  buyLotteryTickets({
+                     userId,
+                     amount: totalCost,
+                     gameId,
+                     userLotteryData,
+                     isManually: ShowOptions?.isManually,
+                  }),
+               );
+            } else {
+               console.error('Balls ref is not available');
+            }
+         } else {
             dispatch(
                buyLotteryTickets({
                   userId,
                   amount: totalCost,
                   gameId,
-                  userLotteryData,
+                  numberOfTickets,
                   isManually: ShowOptions?.isManually,
                }),
             );
-         } else {
-            // user selected the random number options.
          }
       } else {
          toast.error('User information is not available');
