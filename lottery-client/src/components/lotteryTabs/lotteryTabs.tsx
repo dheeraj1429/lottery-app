@@ -46,10 +46,8 @@ function LotteryTabs() {
             <TabsContent className="p-2 bg-zinc-800 mt-2">
                {ShowTab === 'my_ticket' && <MyLotteryTickets />}
                {ShowTab === 'result' && <LotteryResult />}
+               {ShowTab === 'my_winnings' && <NoData />}
             </TabsContent>
-            {/* <TabsContent className="p-2 bg-zinc-800 mt-2">
-               <NoData />
-            </TabsContent> */}
          </TabContainer>
       </div>
    );

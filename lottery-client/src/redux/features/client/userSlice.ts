@@ -3,6 +3,7 @@ import { StateProps } from '.';
 
 const INITALSTATE: StateProps = {
    user: null,
+   showSuccessPopUp: false,
 };
 
 const clientSlice = createSlice({
@@ -12,10 +13,13 @@ const clientSlice = createSlice({
       setUser: (state, action) => {
          state.user = action.payload;
       },
+      showAndHideSuccessPopUp: (state, action) => {
+         state.showSuccessPopUp = action.payload;
+      },
    },
    extraReducers: (bulder) => {},
 });
 
-export const { setUser } = clientSlice.actions;
+export const { setUser, showAndHideSuccessPopUp } = clientSlice.actions;
 
 export default clientSlice;

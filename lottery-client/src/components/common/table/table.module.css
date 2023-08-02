@@ -1,0 +1,37 @@
+.table_div {
+   width: 100%;
+   padding: 1rem;
+}
+
+.table_cm {
+   width: 100%;
+   overflow: hidden;
+   border-radius: 10px;
+   border: 1px solid var(--smooth-gray-cl);
+   overflow: scroll;
+}
+
+.thead {
+   border-bottom: 1px solid var(--smooth-gray-cl);
+}
+
+._btn {
+   padding: 0.3rem 1rem;
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   @apply shadow-lg rounded-lg;
+}
+
+.table_heading {
+   font-size: 14px;
+   text-align: start;
+   font-weight: 500;
+   color: var(--smooth-gray-lg-cl);
+   padding: 1rem;
+}
+
+.disable_btn {
+   opacity: 0.5;
+   cursor: not-allowed;
+}

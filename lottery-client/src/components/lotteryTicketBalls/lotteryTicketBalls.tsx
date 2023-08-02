@@ -4,7 +4,7 @@ import classes from './LotteryTicket.module.css';
 interface Props {
    show: number[];
    numbers?: any;
-   isDemo: boolean;
+   isDemo?: boolean;
 }
 
 const ballsAr = new Array(6).fill(1);
