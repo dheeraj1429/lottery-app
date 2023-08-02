@@ -41,6 +41,21 @@ function MyLotteryTickets() {
    const lotteryTicketLoading = useAppSelector(lotteryTicketLoadingSelector);
    const lotteryTicketInfo = useAppSelector(lotteryTicketInfoSelector);
 
+   const loadMoreHandler = function () {
+      const { page } = lotteryTicketInfo!;
+
+      if (!!user && user?.user && user?.user?.userId) {
+         const { userId } = user?.user;
+         dispatch(
+            getUserLotteryTickets({
+               userId,
+               gameId: todayLottery?.item?._id!,
+               page: page + 1,
+            }),
+         );
+      }
+   };
+
    useEffect(() => {
       if (
          !!user &&
@@ -104,6 +119,7 @@ function MyLotteryTickets() {
                               <Button
                                  isLoading={loadMoreTickets}
                                  variation="wallet_button"
+                                 onClick={loadMoreHandler}
                               >
                                  Load More
                               </Button>
