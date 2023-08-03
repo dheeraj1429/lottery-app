@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
-import { lotteryNumbers } from './lotteryUsers.schema';
 
 export type NumberCombinatioDocument = HydratedDocument<NumberCombination>;
 
@@ -15,8 +14,15 @@ export class NumberCombination {
    @Prop({ type: Date, default: Date.now })
    createdAt: Date;
 
-   @Prop({ type: lotteryNumbers })
-   combinations: lotteryNumbers[];
+   @Prop({
+      type: [
+         {
+            luckyNumbers: [{ type: Number }],
+            jackpotBallNumber: Number,
+         },
+      ],
+   })
+   combinations: { luckyNumbers: number[]; jackpotBallNumber: number }[];
 }
 
 export const NumberCombinationSchema =

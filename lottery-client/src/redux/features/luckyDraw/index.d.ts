@@ -3,7 +3,7 @@ export interface GetTodayLotteryResponse extends ApiResponseInterface {
    item: {
       _id: string;
       gameId: number;
-      lotteryPollResultTime: Date;
+      lotteryResultTime: Date;
       createdAt: Date;
    };
 }
@@ -12,7 +12,7 @@ export interface GetUserLotteryTicketsPayload {
    gameId: string;
    page: number;
 }
-export interface lotteryPollNumbers {
+export interface lotteryNumbers {
    luckyNumbers: number[];
    jackpotBallNumber: number;
 }
@@ -23,7 +23,7 @@ export interface LotteryTicketsInterface {
    price: string;
    refundTicket: boolean;
    userId: string;
-   lotteryPollNumbers: lotteryPollNumbers;
+   lotteryNumbers: lotteryNumbers;
    numbersMatches?: number;
 }
 export interface GetUserLotteryTicketsResponse extends ApiResponseInterface {
@@ -40,7 +40,7 @@ export interface GetUserLotteryTicketsResponse extends ApiResponseInterface {
 export interface UserLotteryInterface {
    userId: string;
    numberOfTickets: number;
-   lotteryPollNumbers: lotteryPollNumbers;
+   lotteryNumbers: lotteryPollNumbers;
 }
 export interface BuyLotteryTicketsPayload {
    amount: string;
@@ -49,6 +49,7 @@ export interface BuyLotteryTicketsPayload {
    isManually: boolean;
    numberOfTickets?: number;
    userId: string;
+   clientId: stirng;
 }
 export interface BuyLotteryTicketsResponse extends ApiResponseInterface {
    message?: string;

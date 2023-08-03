@@ -1,6 +1,17 @@
-import { Body, Controller, Get, Patch, Query, Res, UseGuards } from '@nestjs/common';
-import { JwtGuard } from 'src/guards/jwt-guard.guard';
-import { AccountConfigDto, AccountConfigUpdateDto } from './dtos/account-config.dto';
+import {
+   Body,
+   Controller,
+   Get,
+   Patch,
+   Query,
+   Res,
+   UseGuards,
+} from '@nestjs/common';
+import { JwtGuard } from 'src/guards/jwt.guard';
+import {
+   AccountConfigDto,
+   AccountConfigUpdateDto,
+} from './dtos/account-config.dto';
 import { AccountConfigService } from './account-config.service';
 
 @UseGuards(JwtGuard)
@@ -14,7 +25,10 @@ export class AccountConfigController {
    }
 
    @Patch('/update-config')
-   async updateUserAccountConfig(@Body() body: AccountConfigUpdateDto, @Res() res) {
+   async updateUserAccountConfig(
+      @Body() body: AccountConfigUpdateDto,
+      @Res() res,
+   ) {
       return this.accountConfigService.updateUserAccountConfig(body, res);
    }
 }

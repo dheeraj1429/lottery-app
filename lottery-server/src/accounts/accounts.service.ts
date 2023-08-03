@@ -9,7 +9,7 @@ import {
    UserAccountGetDto,
    updateAccountPasswordDto,
 } from './dtos/accounts.dtos';
-import { JwtGuard } from 'src/guards/jwt-guard.guard';
+import { JwtGuard } from 'src/guards/jwt.guard';
 import { checkIsValidId, responseObject } from 'src/utils/helper';
 import { Response } from 'express';
 import * as bcrypt from 'bcrypt';

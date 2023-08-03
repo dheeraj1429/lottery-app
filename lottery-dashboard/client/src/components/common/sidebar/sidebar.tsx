@@ -8,6 +8,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import useRole from '@/hooks/useRole';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import GamepadIcon from '@mui/icons-material/Gamepad';
 
 function Sidebar() {
    const { isAdmin, isSubAdmin } = useRole();
@@ -31,6 +32,11 @@ function Sidebar() {
                      heading={'Accounts'}
                      icon={<SupervisorAccountIcon />}
                      link={'/account'}
+                  />
+                  <IconList
+                     heading="Lottery"
+                     icon={<GamepadIcon />}
+                     link={'/lottery'}
                   />
                </>
             ) : null}

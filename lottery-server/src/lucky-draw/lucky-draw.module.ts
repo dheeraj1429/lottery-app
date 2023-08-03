@@ -11,10 +11,13 @@ import {
    LotteryUsers,
    lotteryUsersSchema,
 } from 'src/tasks/schemas/lotteryUsers.schema';
+import { RoleModule } from 'src/role/role.module';
 
 @Module({
    imports: [
       JwtTokenModule,
+
+      RoleModule,
 
       MongooseModule.forFeature([
          { name: LotteryGame.name, schema: LotteryGameSchema },

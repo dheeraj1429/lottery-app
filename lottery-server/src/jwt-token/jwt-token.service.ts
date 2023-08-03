@@ -49,4 +49,13 @@ export class JwtTokenService {
       if (token.length !== 2) return { token: null };
       return { token: token[1] };
    }
+
+   /**
+    * @param token access token.
+    * @returns token payload which contains all the token information.
+    */
+   getTokenPayload(token: string) {
+      const payload = this.jwtService.decode(token) as { id: string };
+      return payload;
+   }
 }

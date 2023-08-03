@@ -43,4 +43,14 @@ export class BuyLotteryTicketsDto {
    @IsNotEmpty()
    @IsString()
    userId: string;
+
+   @IsNotEmpty()
+   @IsString()
+   clientId: string;
+}
+
+export class GetAllLotteryDrawDto {
+   @IsNotEmpty()
+   @IsString()
+   page: string;
 }

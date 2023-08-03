@@ -6,6 +6,7 @@ import { LotteryGame } from 'src/tasks/schemas/lotteryGame.schema';
 import { generateUniqueRandomNumbers, responseObject } from 'src/utils/helper';
 import {
    BuyLotteryTicketsDto,
+   GetAllLotteryDrawDto,
    getUserLotteryDtos,
 } from './dtos/lucky-draw.dtos';
 import { LotteryUsers } from 'src/tasks/schemas/lotteryUsers.schema';
@@ -19,19 +20,26 @@ export class LuckyDrawService {
       private readonly lotteryUsers: Model<LotteryUsers>,
    ) {}
 
-   genrateUniqueNumbers = function (userId: string, numberOfTickets: number) {
+   genrateUniqueNumbers = function (
+      userId: string,
+      numberOfTickets: number,
+      clientId: string,
+   ) {
       const newLotteryData = new Array(numberOfTickets).fill({}).map(() => {
          const uniqueAr = generateUniqueRandomNumbers(5, 1, 36);
 
          return {
             userId,
             numberOfTickets: 1,
-            lotteryPollNumbers: {
+            lotteryNumbers: {
                luckyNumbers: uniqueAr,
                jackpotBallNumber: Math.floor(Math.random() * 10 + 1),
             },
+            clientId,
          };
       });
+
+      console.log(newLotteryData);
 
       return newLotteryData;
    };
@@ -43,7 +51,7 @@ export class LuckyDrawService {
 
       const todayLotteryPoll = await this.lotteryGame.aggregate([
          { $match: { gameId: findDocuments + defaultGameId - 1 } },
-         { $project: { createdAt: 1, lotteryPollResultTime: 1, gameId: 1 } },
+         { $project: { createdAt: 1, lotteryResultTime: 1, gameId: 1 } },
       ]);
 
       const data = todayLotteryPoll?.[0];
@@ -67,6 +75,7 @@ export class LuckyDrawService {
          isManually,
          numberOfTickets,
          userId,
+         clientId,
       } = data;
 
       if (!amount || !gameId) {
@@ -87,8 +96,9 @@ export class LuckyDrawService {
               isUsed: false,
               refundTicket: false,
               createdAt: new Date(),
+              clientId,
            }
-         : this.genrateUniqueNumbers(userId, numberOfTickets);
+         : this.genrateUniqueNumbers(userId, numberOfTickets, clientId);
 
       let findLotterPollAndPlaceTicket = await this.lotteryUsers.updateOne(
          { gameId },
@@ -147,7 +157,7 @@ export class LuckyDrawService {
                _id: 1,
                'tickets.userId': 1,
                'tickets.numberOfTickets': 1,
-               'tickets.lotteryPollNumbers': 1,
+               'tickets.lotteryNumbers': 1,
                'tickets.price': {
                   $cond: {
                      if: { $eq: [{ $type: '$tickets.price' }, 'missing'] },
@@ -201,5 +211,42 @@ export class LuckyDrawService {
 
       const error = responseObject(false, true, { message: 'User not found!' });
       return res.status(HttpStatus.NOT_FOUND).json(error);
+   }
+
+   async getAllLotteryDraw(data: GetAllLotteryDrawDto, res: Response) {
+      const { page } = data;
+      const DOCUMENT_LIMIT = 9;
+      const countDocuments = await this.lotteryGame.countDocuments();
+
+      const allLottery = await this.lotteryGame.aggregate([
+         { $sort: { createdAt: -1 } },
+         { $skip: +page * DOCUMENT_LIMIT },
+         { $limit: DOCUMENT_LIMIT },
+         {
+            $project: {
+               gameId: 1,
+               lotteryResultTime: 1,
+               lotteryResult: 1,
+               lotteryResultShow: 1,
+               createdAt: 1,
+            },
+         },
+      ]);
+
+      if (allLottery) {
+         const responseData = responseObject(true, false, {
+            items: allLottery,
+            totalDocuments: countDocuments,
+            totalPages: Math.ceil(countDocuments / DOCUMENT_LIMIT - 1),
+            page: +page,
+         });
+         return res.status(HttpStatus.OK).json(responseData);
+      }
+
+      const error = responseObject(false, true, {
+         message: 'No records found',
+      });
+
+      return res.status(HttpStatus.BAD_REQUEST).json(error);
    }
 }

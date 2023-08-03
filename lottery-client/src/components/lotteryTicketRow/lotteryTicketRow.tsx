@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 import LotteryTicketBalls from '../lotteryTicketBalls/lotteryTicketBalls';
 import {
    LotteryTicketsInterface,
-   lotteryPollNumbers,
+   lotteryNumbers,
 } from '@/redux/features/luckyDraw';
 
 interface Props {
    data: LotteryTicketsInterface;
-   matchResult?: lotteryPollNumbers;
+   matchResult?: lotteryNumbers;
    showData?: boolean;
 }
 
@@ -22,10 +22,12 @@ function LotteryTicketRow({ data, matchResult, showData }: Props) {
 
    useEffect(() => {
       const {
-         lotteryPollNumbers: { luckyNumbers, jackpotBallNumber },
+         lotteryNumbers: { luckyNumbers, jackpotBallNumber },
       } = data;
 
-      const luckyNumbersObject: any = {};
+      const luckyNumbersObject: {
+         [key: string]: number;
+      } = {};
 
       for (let i = 0; i < luckyNumbers.length; i++) {
          luckyNumbersObject[i + 1] = luckyNumbers[i];

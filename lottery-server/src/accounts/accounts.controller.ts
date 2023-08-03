@@ -1,7 +1,22 @@
-import { Body, Controller, Get, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
-import { AccountDto, NewAccountDto, UpdateAccountDto, UserAccountGetDto, updateAccountPasswordDto } from './dtos/accounts.dtos';
+import {
+   Body,
+   Controller,
+   Get,
+   Patch,
+   Post,
+   Query,
+   Res,
+   UseGuards,
+} from '@nestjs/common';
+import {
+   AccountDto,
+   NewAccountDto,
+   UpdateAccountDto,
+   UserAccountGetDto,
+   updateAccountPasswordDto,
+} from './dtos/accounts.dtos';
 import { AccountsService } from './accounts.service';
-import { JwtGuard } from 'src/guards/jwt-guard.guard';
+import { JwtGuard } from 'src/guards/jwt.guard';
 
 UseGuards(JwtGuard);
 @Controller('accounts')
@@ -29,7 +44,10 @@ export class AccountsController {
    }
 
    @Patch('/update-account-password')
-   async updateAccountPassword(@Body() body: updateAccountPasswordDto, @Res() res) {
+   async updateAccountPassword(
+      @Body() body: updateAccountPasswordDto,
+      @Res() res,
+   ) {
       return this.accountService.updateAccountPassword(body, res);
    }
 }

@@ -18,4 +18,8 @@ export class AccountConfigUpdateDto {
    @IsString()
    @IsNotEmpty()
    clientId: string;
+
+   @IsString()
+   @IsNotEmpty()
+   updateClientInformationApi: string;
 }

@@ -22,6 +22,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
 import { userSelector, todayLotterySelector } from './buyLottery.selector';
 import { buyLotteryTickets } from '@/redux/features/luckyDraw/luckyDrawActions';
 import { BallsRefInterface, StateProps, Props } from '.';
+import { useSearchParams } from 'next/navigation';
 
 const priceOfCurrencyToLottery = 1;
 
@@ -38,6 +39,8 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
       isManually: false,
    });
 
+   const param = useSearchParams();
+   const clientId = param.get('clientId');
    const userInfo = useAppSelector(userSelector);
    const todayLottery = useAppSelector(todayLotterySelector);
    const dispatch = useAppDispatch();
@@ -109,7 +112,7 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                   {
                      userId,
                      numberOfTickets,
-                     lotteryPollNumbers: {
+                     lotteryNumbers: {
                         luckyNumbers: digitsOptionalNumbers,
                         jackpotBallNumber,
                      },
@@ -123,6 +126,7 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                      gameId,
                      userLotteryData,
                      isManually: ShowOptions?.isManually,
+                     clientId,
                   }),
                );
             } else {
@@ -136,6 +140,7 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                   gameId,
                   numberOfTickets,
                   isManually: ShowOptions?.isManually,
+                  clientId,
                }),
             );
          }

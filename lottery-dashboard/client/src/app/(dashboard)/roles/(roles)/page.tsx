@@ -106,7 +106,7 @@ function RolesList() {
                         </TableBody>
                      </Table>
                   </TableChildContainer>
-                  <NextAndPrevButtons nextAndPrev={true}></NextAndPrevButtons>
+                  {/* <NextAndPrevButtons nextAndPrev={true}></NextAndPrevButtons> */}
                </TableContainer>
             ) : null}
          </div>

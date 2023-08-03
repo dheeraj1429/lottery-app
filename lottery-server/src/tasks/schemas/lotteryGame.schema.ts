@@ -3,14 +3,6 @@ import { Document, HydratedDocument } from 'mongoose';
 
 export type LotteryGameSchemaDocument = HydratedDocument<LotteryGame>;
 
-export class LuckyNumbersSchema {
-   @Prop({ type: [Number] })
-   luckyNumbers: number[];
-
-   @Prop({ type: Number })
-   jackpotBallNumber: number;
-}
-
 @Schema()
 export class LotteryGame extends Document {
    @Prop({ type: Number, default: 1000, required: true, unique: true })
@@ -22,8 +14,16 @@ export class LotteryGame extends Document {
    @Prop({ type: Date, default: Date.now })
    lotteryResultTime: Date;
 
-   @Prop({ type: LuckyNumbersSchema })
-   lotteryResult: LuckyNumbersSchema;
+   @Prop({
+      type: {
+         luckyNumbers: [{ type: Number }],
+         jackpotBallNumber: { type: Number },
+      },
+   })
+   lotteryResult: {
+      luckyNumbers: number[];
+      jackpotBallNumber: number;
+   };
 
    @Prop({ type: Boolean, default: false })
    lotteryResultShow: boolean;

@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-
 export interface ApiResponseInterface {
    success: boolean;
    error: boolean;

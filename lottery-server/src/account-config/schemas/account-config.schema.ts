@@ -16,6 +16,9 @@ export class AccountConfig {
 
    @Prop()
    userInfoApi: string;
+
+   @Prop()
+   updateClientInformationApi: string;
 }
 
 export const AccountConfigSchema = SchemaFactory.createForClass(AccountConfig);

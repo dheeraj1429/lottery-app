@@ -56,7 +56,7 @@ function LotteryHeading({ gameId, date }: { gameId?: number; date?: Date }) {
                            {dayjs(
                               !!date
                                  ? date
-                                 : todayLottery?.item?.lotteryPollResultTime,
+                                 : todayLottery?.item?.lotteryResultTime,
                            ).format('MMMM DD hh:mm:ss A')}
                         </p>
                      </div>

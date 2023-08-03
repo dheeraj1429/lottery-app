@@ -22,6 +22,8 @@ function LotteryBanner() {
    const todayLotteryLoading = useAppSelector(todayLotteryLoadingSelector);
    const todayLotteryError = useAppSelector(todayLotteryErrorSelector);
 
+   console.log({ todayLottery });
+
    function updateCountdown(countdownTime: Date) {
       const currentTime = new Date().getTime();
       const remainingTime = new Date(countdownTime).getTime() - currentTime;
@@ -47,7 +49,7 @@ function LotteryBanner() {
       let interval: any;
       if (!!todayLottery && todayLottery?.success && todayLottery?.item) {
          interval = setInterval(() => {
-            updateCountdown(todayLottery?.item?.lotteryPollResultTime);
+            updateCountdown(todayLottery?.item?.lotteryResultTime);
          }, 1000);
       }
 

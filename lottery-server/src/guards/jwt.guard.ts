@@ -5,13 +5,12 @@ import {
    UnauthorizedException,
 } from '@nestjs/common';
 import { JwtTokenService } from 'src/jwt-token/jwt-token.service';
-import { Observable } from 'rxjs';
-export type jwtGuardResponse = boolean | Promise<boolean> | Observable<boolean>;
+import { GuardResponse } from '.';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
    constructor(private readonly jwtTokenService: JwtTokenService) {}
-   canActivate(context: ExecutionContext): jwtGuardResponse {
+   canActivate(context: ExecutionContext): GuardResponse {
       const request = context.switchToHttp().getRequest();
       const authorization = this.jwtTokenService.getToken(request.headers);
 

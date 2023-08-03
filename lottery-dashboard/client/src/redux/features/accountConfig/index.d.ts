@@ -4,6 +4,7 @@ export interface AccountConfig {
    clientId: string;
    _id: string;
    userInfoApi: string;
+   updateClientInformationApi: string;
 }
 export interface AccountConfigResponse extends ApiResponseInterface {
    userConfigInfo: AccountConfig;
@@ -15,6 +16,7 @@ export interface UpdateUserAccountConfigPayload {
    userId: string;
    userInfoApi: string;
    clientId: string;
+   updateClientInformationApi: string;
 }
 export interface updateUserAccountConfigResponse extends ApiResponseInterface {
    message: string;

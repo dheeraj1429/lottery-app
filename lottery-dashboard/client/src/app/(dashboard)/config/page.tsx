@@ -29,11 +29,13 @@ import {
 export interface Props {
    clientId: string;
    userInfoApi: string;
+   updateClientInformationApi: string;
 }
 
 const schema = yup.object({
    clientId: yup.string().required(),
    userInfoApi: yup.string().required(),
+   updateClientInformationApi: yup.string().required(),
 });
 
 function Config() {
@@ -46,6 +48,7 @@ function Config() {
       defaultValues: {
          clientId: '',
          userInfoApi: '',
+         updateClientInformationApi: '',
       },
       resolver: yupResolver(schema),
    });
@@ -87,9 +90,11 @@ function Config() {
          accountConfigInfo?.success &&
          accountConfigInfo?.userConfigInfo
       ) {
-         const { clientId, userInfoApi } = accountConfigInfo?.userConfigInfo;
+         const { clientId, userInfoApi, updateClientInformationApi } =
+            accountConfigInfo?.userConfigInfo;
          setValue('clientId', clientId);
          setValue('userInfoApi', userInfoApi);
+         setValue('updateClientInformationApi', updateClientInformationApi);
       }
    }, [accountConfigInfo]);
 
@@ -142,7 +147,7 @@ function Config() {
                            )}
                         />
                      </div>
-                     <div className="flex items-center space-x-2">
+                     <div className="flex items-center space-x-2 pt-5">
                         <div className="w-3/12">
                            <p className="text-gray-700">
                               Client information api :
@@ -165,6 +170,33 @@ function Config() {
                            {!!errors?.userInfoApi?.message && (
                               <p className="text-sm text-red-500 mt-1">
                                  {errors?.userInfoApi?.message}
+                              </p>
+                           )}
+                        </div>
+                     </div>
+                     <div className="flex items-center space-x-2 pt-5">
+                        <div className="w-3/12">
+                           <p className="text-gray-700">
+                              Client Information update api :
+                           </p>
+                        </div>
+                        <div className="w-full">
+                           <Controller
+                              name="updateClientInformationApi"
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                 <TextField
+                                    className="w-full"
+                                    onChange={onChange}
+                                    value={value}
+                                    label="client infromation"
+                                    variant="outlined"
+                                 />
+                              )}
+                           />
+                           {!!errors?.updateClientInformationApi?.message && (
+                              <p className="text-sm text-red-500 mt-1">
+                                 {errors?.updateClientInformationApi?.message}
                               </p>
                            )}
                         </div>

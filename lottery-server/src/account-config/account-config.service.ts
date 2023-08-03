@@ -40,7 +40,8 @@ export class AccountConfigService {
    }
 
    async updateUserAccountConfig(query: AccountConfigUpdateDto, res: Response) {
-      const { clientId, userInfoApi, userId } = query;
+      const { clientId, userInfoApi, userId, updateClientInformationApi } =
+         query;
 
       // find the client id or the user id is exists or not.
       const userConfig = await this.accountConfig.findOne({
@@ -61,7 +62,7 @@ export class AccountConfigService {
                { clientId },
             ],
          },
-         { $set: { userInfoApi } },
+         { $set: { userInfoApi, updateClientInformationApi } },
       );
 
       if (updateAccountConfig.modifiedCount) {

@@ -10,6 +10,8 @@ import {
    NumberCombination,
    NumberCombinationSchema,
 } from './schemas/number-combinations.schema';
+import { AccountConfigModule } from 'src/account-config/account-config.module';
+import { AccountConfig } from 'src/account-config/schemas/account-config.schema';
 
 @Module({
    imports: [
@@ -17,10 +19,13 @@ import {
          { name: LotteryGame.name, schema: LotteryGameSchema },
          { name: LotteryUsers.name, schema: lotteryUsersSchema },
          { name: NumberCombination.name, schema: NumberCombinationSchema },
+         { name: AccountConfig.name, schema: AccountConfigModule },
       ]),
    ],
 
-   providers: [TasksService],
+   providers: [
+      // TasksService
+   ],
 
    controllers: [],
 

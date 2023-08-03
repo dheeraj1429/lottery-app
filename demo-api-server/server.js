@@ -38,6 +38,15 @@ app.post('/user/user-info', (req, res, next) => {
    });
 });
 
+app.post('/user/update-user-price', (req, res, next) => {
+   console.log(req.body);
+   return res.status(200).json({
+      success: true,
+      error: false,
+      message: 'User updated',
+   });
+});
+
 app.listen(port, () => {
    console.log(`server listening on ${port}`);
 });
