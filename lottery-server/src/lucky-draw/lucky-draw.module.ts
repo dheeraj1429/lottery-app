@@ -12,6 +12,10 @@ import {
    lotteryUsersSchema,
 } from 'src/tasks/schemas/lotteryUsers.schema';
 import { RoleModule } from 'src/role/role.module';
+import {
+   AccountConfig,
+   AccountConfigSchema,
+} from 'src/account-config/schemas/account-config.schema';
 
 @Module({
    imports: [
@@ -22,6 +26,7 @@ import { RoleModule } from 'src/role/role.module';
       MongooseModule.forFeature([
          { name: LotteryGame.name, schema: LotteryGameSchema },
          { name: LotteryUsers.name, schema: lotteryUsersSchema },
+         { name: AccountConfig.name, schema: AccountConfigSchema },
       ]),
    ],
 

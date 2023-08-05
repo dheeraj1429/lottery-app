@@ -259,7 +259,7 @@ export class TasksService {
       console.log('createLotteryGameLobby =>', createLotteryGameLobby);
    }
 
-   @Cron('*/3 * * * * *')
+   @Cron('*/3 * * * *')
    async handleCron() {
       this.logger.debug('Called when the current second');
 
@@ -296,20 +296,15 @@ export class TasksService {
          console.log('storeAllLotteryWinners =>', storeAllLotteryWinners);
       }
 
-      // const updateTodayLottery = await this.lotteryGameModel.updateOne(
-      //    { gameId: findDocuments + defaultGameId - 1 },
-      //    { $set: { lotteryPollResultShow: true } },
-      // );
+      const updateTodayLottery = await this.lotteryGameModel.updateOne(
+         { gameId: findDocuments + defaultGameId - 1 },
+         { $set: { lotteryPollResultShow: true } },
+      );
 
-      // if (!updateTodayLottery) {
-      //    this.logger.error('updateTodayLottery =>', updateTodayLottery);
-      // }
+      if (!updateTodayLottery) {
+         this.logger.error('updateTodayLottery =>', updateTodayLottery);
+      }
 
-      // const game = await this.genrateNewGame(
-      //    gameId,
-      //    _id,
-      //    nextRoundDate,
-      //    refundTicketsArray,
-      // );
+      await this.genrateNewGame(gameId, _id, nextRoundDate, refundTicketsArray);
    }
 }

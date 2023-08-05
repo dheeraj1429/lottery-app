@@ -1,6 +1,10 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
-import { TabsListInterface, TabsTriggerInterface } from '.';
+
+export interface TabsListInterface
+   extends React.HTMLAttributes<HTMLDivElement> {}
+export interface TabsTriggerInterface
+   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListInterface>(
    ({ className, ...props }, ref) => (

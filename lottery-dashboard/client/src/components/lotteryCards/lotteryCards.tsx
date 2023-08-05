@@ -63,7 +63,7 @@ function LotteryCards() {
          ) : (
             !allLotteryLoading && (
                <div className="text-center mt-4">
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-gray-800">
                      No lottery poll is live.
                   </p>
                </div>

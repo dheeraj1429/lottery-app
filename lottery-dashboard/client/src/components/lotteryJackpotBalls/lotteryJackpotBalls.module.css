@@ -1,0 +1,77 @@
+.ballsDiv {
+   border-radius: 5px;
+   padding: 1rem;
+   /* background-image: url('/images/select_a.png'); */
+   background-position: center;
+   background-size: cover;
+   height: 370px;
+   background-size: 100% auto;
+   overflow: hidden;
+}
+
+.grid_div,
+.jackpot_balls {
+   display: grid;
+   grid-template-columns: repeat(9, 1fr);
+}
+
+.digital_ball_div {
+   width: 100%;
+   height: 35px;
+   margin-bottom: 0.4rem;
+   border-radius: 50%;
+}
+
+.ball {
+   width: 100%;
+   height: 100%;
+   background-position: center;
+   background-size: contain;
+   border-radius: 50%;
+   opacity: 1;
+   font-size: 12px;
+   font-weight: 700;
+   background-color: var(--smooth-gray-sl-cl);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+}
+
+.ball p {
+   color: var(--smooth-gray-cl);
+}
+
+.active_ball {
+   background-image: url(/images/ball.webp);
+}
+
+.active_ball p {
+   color: var(--dark-home-cl) !important;
+}
+
+.jackpot_balls {
+   display: grid;
+   grid-template-columns: repeat(10, 1fr);
+}
+
+.jackpot_balls .digital_ball_div {
+   height: 31px;
+}
+
+.jackpot_active_ball {
+   background-image: url(/images/jackpot_ball.webp);
+   background-color: transparent !important;
+}
+
+.jackpot_active_ball p {
+   color: var(--dark-home-cl) !important;
+}
+
+.jc {
+   background-color: var(--smooth-gray-cl);
+}
+
+.jc p {
+   color: var(--dark-home-cl) !important;
+}

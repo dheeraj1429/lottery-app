@@ -1,4 +1,11 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import {
+   IsArray,
+   IsBoolean,
+   IsInt,
+   IsNotEmpty,
+   IsNumber,
+   IsString,
+} from 'class-validator';
 
 export class getUserLotteryDtos {
    @IsNotEmpty()
@@ -53,4 +60,24 @@ export class GetAllLotteryDrawDto {
    @IsNotEmpty()
    @IsString()
    page: string;
+}
+
+export class GetSingleLotteryDrawDto {
+   @IsNotEmpty()
+   @IsString()
+   gameId: string;
+}
+
+export class UpdateLotteryResultDto {
+   @IsNotEmpty()
+   @IsString()
+   gameId: string;
+
+   @IsNotEmpty()
+   @IsArray()
+   optionalNumbers: number[];
+
+   @IsNotEmpty()
+   @IsInt()
+   jackpotBall: number;
 }

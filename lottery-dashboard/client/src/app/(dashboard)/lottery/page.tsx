@@ -6,12 +6,17 @@ import PageHeading from '@/components/common/pageHeading/PageHeading';
 import withRoles from '@/hoc/withRoles';
 import { getAllLottery } from '@/redux/features/luckyDraw/luckyDrawActions';
 import LotteryCards from '@/components/lotteryCards/lotteryCards';
+import { removeAllLotteryTickets } from '@/redux/features/luckyDraw/luckyDrawSlice';
 
 function Lottery() {
    const dispatch = useAppDispatch();
 
    useEffect(() => {
       dispatch(getAllLottery({ page: 0 }));
+
+      return () => {
+         dispatch(removeAllLotteryTickets());
+      };
    }, []);
 
    return (

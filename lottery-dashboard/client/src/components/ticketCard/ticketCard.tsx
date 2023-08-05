@@ -41,7 +41,7 @@ function TicketCard({ data }: { data: LotteryTicketInterface }) {
    }, [data]);
 
    return (
-      <div className="w-full px-2">
+      <div className="w-full p-2">
          <div className={`${classes['coupon']} `}>
             <div className={classes['edit_div']}>
                <EditIcon className="text-gray-600" onClick={linkHandler} />
