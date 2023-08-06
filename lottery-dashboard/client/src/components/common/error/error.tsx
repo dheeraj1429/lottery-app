@@ -1,4 +1,6 @@
-import { Props } from './';
+export interface Props {
+   data: string[] | string;
+}
 
 function Error({ data }: Props) {
    return Array.isArray(data) ? (

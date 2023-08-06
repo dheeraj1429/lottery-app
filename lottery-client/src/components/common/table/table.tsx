@@ -136,6 +136,14 @@ const NextAndPrevButtons = ({
    );
 };
 
+TableContainer.displayName = 'Table Container';
+TableChildContainer.displayName = 'Table Child Container';
+Table.displayName = 'Table';
+TableHeader.displayName = 'Table Header';
+TableRow.displayName = 'Table Row';
+TableBody.displayName = 'Table Body';
+NextAndPrevButtons.displayName = 'Next And Prev Buttons';
+
 export {
    Table,
    TableContainer,

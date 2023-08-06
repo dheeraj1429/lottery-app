@@ -84,5 +84,10 @@ const SheetTitle = React.forwardRef<HTMLDivElement, SheetPortalInterface>(
    ),
 );
 
+SheetPortal.displayName = 'Sheet Portal';
+SheetOverlay.displayName = 'Sheet Overlay';
+SheetContent.displayName = 'Sheet Content';
+SheetHeader.displayName = 'Sheet Header';
+SheetTitle.displayName = 'Sheet Title';
 export { SheetOverlay, SheetContent, SheetHeader, SheetTitle };
 export default SheetPortal;
