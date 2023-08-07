@@ -101,14 +101,9 @@ function MyLotteryTickets() {
                               <TableRow row={ROW} />
                            </TableHeader>
                            <TableBody>
-                              {lotteryTicketInfo?.item?.tickets.map(
-                                 (el, idx) => (
-                                    <LotteryTicketRow
-                                       key={idx + 'key'}
-                                       data={el}
-                                    />
-                                 ),
-                              )}
+                              {lotteryTicketInfo?.item?.tickets.map((el) => (
+                                 <LotteryTicketRow key={el?._id} data={el} />
+                              ))}
                            </TableBody>
                         </Table>
                      </TableContainer>

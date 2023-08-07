@@ -5,6 +5,9 @@ import { AxiosError } from 'axios';
 import {
    BuyLotteryTicketsPayload,
    BuyLotteryTicketsResponse,
+   GetLotteryResultInterface,
+   GetMyLotteryWinningInterface,
+   GetMyLotteryWinningPayload,
    GetTodayLotteryResponse,
    GetUserLotteryTicketsPayload,
    GetUserLotteryTicketsResponse,
@@ -72,6 +75,47 @@ export const buyLotteryTickets = createAsyncThunk<
             }, 3000);
          }
 
+         return response.data;
+      } catch (err) {
+         const error: AxiosError<KnownError> = err as any;
+         if (!error?.response) {
+            throw err;
+         }
+         return rejectWithValue(error?.response?.data);
+      }
+   },
+);
+
+export const getLotteryResult = createAsyncThunk<
+   GetLotteryResultInterface,
+   void,
+   { rejectValue: KnownError }
+>('luckyDraw/getLotteryResult', async (_, { rejectWithValue }) => {
+   try {
+      const response = await axiosInstance.get(
+         '/lucky-draw/get-lottery-result',
+      );
+      return response.data;
+   } catch (err) {
+      const error: AxiosError<KnownError> = err as any;
+      if (!error?.response) {
+         throw err;
+      }
+      return rejectWithValue(error?.response?.data);
+   }
+});
+
+export const getMyLotteryWinning = createAsyncThunk<
+   GetMyLotteryWinningInterface,
+   GetMyLotteryWinningPayload,
+   { rejectValue: KnownError }
+>(
+   'luckyDraw/getMyLotteryWinning',
+   async ({ page, userId }, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(
+            `/lucky-draw/get-my-lottery-winning?page=${page}&userId=${userId}`,
+         );
          return response.data;
       } catch (err) {
          const error: AxiosError<KnownError> = err as any;

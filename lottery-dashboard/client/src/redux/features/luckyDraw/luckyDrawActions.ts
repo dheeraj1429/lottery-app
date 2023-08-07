@@ -3,7 +3,9 @@ import { axiosInstance } from '@/services/axiosInstance';
 import { ErrorResponseType, KnownError } from '@/types/interface';
 import {
    GameIdPayload,
+   GameUserListInterface,
    GetAllLotteryResponse,
+   GetGameUserListPayload,
    GetSingleLuckyDrawResponseInterface,
    TicketLuckyNumbersCountResponse,
    UpdateLotteryResponseInterface,
@@ -100,6 +102,28 @@ export const lotteryUsersJackpotNumbers = createAsyncThunk<
       try {
          const response = await axiosInstance.get(
             `/lucky-draw/get-lottery-users-jackpot-numbers?gameId=${gameId}`,
+         );
+         return response.data;
+      } catch (err) {
+         const error: ErrorResponseType = err as any;
+         if (!error?.response) {
+            throw err;
+         }
+         return rejectWithValue(error?.response?.data);
+      }
+   },
+);
+
+export const singleLotteryDrawUsersList = createAsyncThunk<
+   GameUserListInterface,
+   GetGameUserListPayload,
+   { rejectValue: KnownError }
+>(
+   'luckyDraw/singleLotteryDrawUsersList',
+   async ({ gameId, filter, page }, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(
+            `/lucky-draw/single-lucky-draw-users-lists?gameId=${gameId}&filter=${filter}&page=${page}`,
          );
          return response.data;
       } catch (err) {

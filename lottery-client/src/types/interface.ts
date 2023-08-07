@@ -20,3 +20,8 @@ export interface InterigationApiResponse extends ApiResponseInterface {
 }
 export type ErrorResponseType = AxiosError<KnownError>;
 export type ErrorType = KnownError | null | undefined;
+export interface PaginationResponse {
+   totalDocuments?: number;
+   totalPages: number;
+   page: number;
+}

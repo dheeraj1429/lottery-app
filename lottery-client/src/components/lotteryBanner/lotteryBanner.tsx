@@ -22,8 +22,6 @@ function LotteryBanner() {
    const todayLotteryLoading = useAppSelector(todayLotteryLoadingSelector);
    const todayLotteryError = useAppSelector(todayLotteryErrorSelector);
 
-   console.log({ todayLottery });
-
    function updateCountdown(countdownTime: Date) {
       const currentTime = new Date().getTime();
       const remainingTime = new Date(countdownTime).getTime() - currentTime;

@@ -3,6 +3,8 @@ import {
    getTodayLottery,
    getUserLotteryTickets,
    buyLotteryTickets,
+   getLotteryResult,
+   getMyLotteryWinning,
 } from './luckyDrawActions';
 import { StateProps } from '.';
 
@@ -18,6 +20,13 @@ const INITALSTATE: StateProps = {
    buyLotteryTicketsError: null,
    buyLotteryTicketsInfo: null,
    showLotteryBuyPopUp: false,
+   lotteryResultInfo: null,
+   lotteryResultLoading: false,
+   lotteryResultErrror: null,
+   myWinnings: null,
+   myWinningsLoading: false,
+   myWinningsError: null,
+   myWinningsLoadMore: false,
 };
 
 const luckyDrawSlice = createSlice({
@@ -127,6 +136,65 @@ const luckyDrawSlice = createSlice({
                state.buyLotteryTicketsLoading = false;
                state.buyLotteryTicketsError = null;
             }
+         });
+
+      bulder
+         .addCase(getLotteryResult.pending, (state) => {
+            state.lotteryResultInfo = null;
+            state.lotteryResultLoading = true;
+            state.lotteryResultErrror = null;
+         })
+         .addCase(getLotteryResult.rejected, (state, action) => {
+            state.lotteryResultInfo = null;
+            state.lotteryResultLoading = false;
+            state.lotteryResultErrror = action.payload;
+         })
+         .addCase(getLotteryResult.fulfilled, (state, action) => {
+            state.lotteryResultInfo = action.payload;
+            state.lotteryResultLoading = false;
+            state.lotteryResultErrror = null;
+         });
+
+      bulder
+         .addCase(getMyLotteryWinning.pending, (state) => {
+            // state.myWinnings = null;
+            state.myWinningsLoading = true;
+            state.myWinningsError = null;
+            state.myWinningsLoadMore = true;
+         })
+         .addCase(getMyLotteryWinning.rejected, (state, action) => {
+            state.myWinnings = null;
+            state.myWinningsLoading = false;
+            state.myWinningsError = action.payload;
+            state.myWinningsLoadMore = false;
+         })
+         .addCase(getMyLotteryWinning.fulfilled, (state, action) => {
+            if (
+               !!state.myWinnings &&
+               state.myWinnings?.success &&
+               state.myWinnings?.winningData &&
+               state.myWinnings?.winningData?.winnings &&
+               state.myWinnings?.winningData?.winnings.length
+            ) {
+               const { winnings } = action.payload?.winningData;
+               state.myWinnings = {
+                  ...state.myWinnings,
+                  winningData: {
+                     ...state.myWinnings?.winningData,
+                     winnings: [
+                        ...state.myWinnings?.winningData?.winnings,
+                        ...winnings,
+                     ],
+                  },
+                  page: state.myWinnings?.page + 1,
+               };
+            } else {
+               state.myWinnings = action.payload;
+            }
+
+            state.myWinningsLoading = false;
+            state.myWinningsError = null;
+            state.myWinningsLoadMore = false;
          });
    },
 });

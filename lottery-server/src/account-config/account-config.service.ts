@@ -22,7 +22,7 @@ export class AccountConfigService {
       // find user config details
       const userConfigInfo = await this.accountConfig.findOne(
          { userId: new mongoose.Types.ObjectId(userId) },
-         { clientId: 1, userInfoApi: 1 },
+         { clientId: 1, userInfoApi: 1, updateClientInformationApi: 1 },
       );
 
       if (!userConfigInfo) {

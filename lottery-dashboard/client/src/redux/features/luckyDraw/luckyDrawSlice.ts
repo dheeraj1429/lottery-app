@@ -6,6 +6,7 @@ import {
    getUserTicketLuckyNumbersCount,
    updateLuckyDrawResult,
    lotteryUsersJackpotNumbers,
+   singleLotteryDrawUsersList,
 } from './luckyDrawActions';
 
 const INITALSTATE: StateProps = {
@@ -25,6 +26,9 @@ const INITALSTATE: StateProps = {
    userJackpotNumbers: null,
    userJackpotNumbersLoading: false,
    userJackpotNumbersError: null,
+   singleLotteryUsers: null,
+   singleLotteryUsersLoading: false,
+   singleLotteryUsersError: null,
 };
 
 const luckyDraw = createSlice({
@@ -142,6 +146,23 @@ const luckyDraw = createSlice({
             state.userJackpotNumbers = action.payload;
             state.userJackpotNumbersLoading = false;
             state.userJackpotNumbersError = null;
+         });
+
+      bulder
+         .addCase(singleLotteryDrawUsersList.pending, (state) => {
+            state.singleLotteryUsers = null;
+            state.singleLotteryUsersLoading = true;
+            state.singleLotteryUsersError = null;
+         })
+         .addCase(singleLotteryDrawUsersList.rejected, (state, action) => {
+            state.singleLotteryUsers = null;
+            state.singleLotteryUsersLoading = false;
+            state.singleLotteryUsersError = action.payload;
+         })
+         .addCase(singleLotteryDrawUsersList.fulfilled, (state, action) => {
+            state.singleLotteryUsers = action.payload;
+            state.singleLotteryUsersLoading = false;
+            state.singleLotteryUsersError = null;
          });
    },
 });

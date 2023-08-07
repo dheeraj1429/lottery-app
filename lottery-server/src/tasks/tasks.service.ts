@@ -176,6 +176,7 @@ export class TasksService {
                jackpotBallNumber === lotteryResult?.jackpotBallNumber
             ) {
                const price = (numberOfTickets * 100000).toFixed(2);
+               matchNumbers.push(lotteryResult?.jackpotBallNumber);
 
                const { response } = await this.updateUserInformation(
                   price,
@@ -197,11 +198,16 @@ export class TasksService {
                );
             }
          }
+      } else {
+         return {
+            refundTicketsArray: [],
+            winnersTicketsArray: [],
+         };
       }
 
       return {
-         refundTicketsArray: [],
-         winnersTicketsArray: [],
+         refundTicketsArray,
+         winnersTicketsArray,
       };
    }
 
@@ -237,7 +243,7 @@ export class TasksService {
          lotteryResultShow: false,
       }).save();
 
-      console.log('createLotteryGame =>', createLotteryGame);
+      // console.log('createLotteryGame =>', createLotteryGame);
 
       // store the game numbers combination.
       const createNumberCombination = await new this.numberCombination({
@@ -246,7 +252,7 @@ export class TasksService {
          combinations,
       }).save();
 
-      console.log('createNumberCombination =>', createNumberCombination);
+      // console.log('createNumberCombination =>', createNumberCombination);
 
       // create the game user lobby.
       const createLotteryGameLobby = await new this.lotteryGameUsersModel({
@@ -256,7 +262,7 @@ export class TasksService {
          winners: [],
       }).save();
 
-      console.log('createLotteryGameLobby =>', createLotteryGameLobby);
+      // console.log('createLotteryGameLobby =>', createLotteryGameLobby);
    }
 
    @Cron('*/3 * * * *')
@@ -280,11 +286,11 @@ export class TasksService {
       const { refundTicketsArray, winnersTicketsArray } =
          await this.updateLotteryResult(lottery, lotteryUsers);
 
-      console.log({ refundTicketsArray, winnersTicketsArray });
-
       // genrate the next game id and _id.
       const gameId = findDocuments + defaultGameId;
       const _id = new mongoose.Types.ObjectId();
+
+      console.log('winnersTicketsArray =>', winnersTicketsArray);
 
       if (!!winnersTicketsArray && winnersTicketsArray.length) {
          const storeAllLotteryWinners =

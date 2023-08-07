@@ -4,7 +4,19 @@ import React from 'react';
 export interface TabsListInterface
    extends React.HTMLAttributes<HTMLDivElement> {}
 export interface TabsTriggerInterface
-   extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+   active?: boolean;
+}
+
+const TabContainer = React.forwardRef<HTMLDivElement, TabsListInterface>(
+   ({ children, ...props }, ref) => {
+      return (
+         <div ref={ref} {...props} className={cn('w-full')}>
+            {children}
+         </div>
+      );
+   },
+);
 
 const TabsList = React.forwardRef<HTMLDivElement, TabsListInterface>(
    ({ className, ...props }, ref) => (
@@ -20,11 +32,13 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListInterface>(
 );
 
 const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerInterface>(
-   ({ className, ...props }, ref) => (
+   ({ className, active, ...props }, ref) => (
       <button
          ref={ref}
          className={cn(
-            'bg-gray-200 inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+            `bg-zinc-800 ${
+               active ? 'bg-zinc-600' : 'bg-zinc-800'
+            } text-gray-100 inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm`,
             className,
          )}
          {...props}
@@ -48,5 +62,6 @@ const TabsContent = React.forwardRef<HTMLDivElement, TabsListInterface>(
 TabsList.displayName = 'Tabs';
 TabsTrigger.displayName = 'TabsTrigger';
 TabsContent.displayName = 'TabsContent';
+TabContainer.displayName = 'TabContainer';
 
-export { TabsList, TabsTrigger, TabsContent };
+export { TabsList, TabsTrigger, TabsContent, TabContainer };

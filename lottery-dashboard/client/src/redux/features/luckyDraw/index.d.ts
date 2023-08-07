@@ -1,12 +1,12 @@
-import { ApiResponseInterface, ErrorType, KnownError } from '@/types/interface';
-export interface PaginationResponse {
-   totalDocuments: number;
-   totalPages: number;
-   page: number;
-}
+import {
+   ApiResponseInterface,
+   ErrorType,
+   KnownError,
+   PaginationResponse,
+} from '@/types/interface';
 export interface LotteryResultInterface {
    jackpotBallNumber: number;
-   _id: string;
+   _id?: string;
    luckyNumbers: number[];
 }
 export interface LotteryTicketInterface {
@@ -44,6 +44,33 @@ export interface TicketLuckyNumbersCountResponse extends ApiResponseInterface {
 export interface GameIdPayload {
    gameId: string;
 }
+export interface LotteryListInterface {
+   userId: string;
+   numberOfTickets: number;
+   lotteryNumbers: LotteryResultInterface;
+   isUsed: boolean;
+   refundTicket: boolean;
+   clientId: string;
+   _id: string;
+   createdAt: Date;
+   price: string;
+}
+export interface GameUserListInterface
+   extends ApiResponseInterface,
+      PaginationResponse {
+   items: {
+      lotteryData: LotteryListInterface[];
+      lottery: {
+         _id: string;
+         numberOfDocuments: number;
+      };
+   };
+}
+export interface GetGameUserListPayload {
+   gameId: string;
+   filter: string;
+   page: number;
+}
 export interface StateProps {
    allLottery: GetAllLotteryResponse | null;
    allLotteryLoading: boolean;
@@ -61,4 +88,7 @@ export interface StateProps {
    userJackpotNumbers: TicketLuckyNumbersCountResponse | null;
    userJackpotNumbersLoading: boolean;
    userJackpotNumbersError: ErrorType;
+   singleLotteryUsers: GameUserListInterface | null;
+   singleLotteryUsersLoading: boolean;
+   singleLotteryUsersError: ErrorType;
 }

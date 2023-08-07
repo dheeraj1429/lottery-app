@@ -25,6 +25,7 @@ import Button from '@/components/common/button/button';
 import { toast } from 'react-hot-toast';
 import { removeUpdateLotteryInfo } from '@/redux/features/luckyDraw/luckyDrawSlice';
 import LotteryParticipateUserGraph from '@/components/lotteryParticipateUserGraph/lotteryParticipateUserGraph';
+import SingleLotteryTabs from '@/components/singleLotteryTabs/singleLotteryTabs';
 
 export interface BallsRefInterface extends HTMLDivElement {
    getState: () => {
@@ -191,6 +192,9 @@ function LotteryPage() {
                            ></p>
                         </div>
                      </div>
+                  </div>
+                  <div className="mb-5">
+                     <SingleLotteryTabs />
                   </div>
                   <div>
                      <LotteryParticipateUserGraph gameId={gameId} />

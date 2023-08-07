@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Response } from 'express';
+import { Response, response } from 'express';
 import mongoose, { Model } from 'mongoose';
 import { LotteryGame } from 'src/tasks/schemas/lotteryGame.schema';
 import {
@@ -12,12 +12,14 @@ import {
    BuyLotteryTicketsDto,
    GetAllLotteryDrawDto,
    GetSingleLotteryDrawDto,
+   SingleLuckyDrawUsersListDto,
    UpdateLotteryResultDto,
    getUserLotteryDtos,
 } from './dtos/lucky-draw.dtos';
 import { LotteryUsers } from 'src/tasks/schemas/lotteryUsers.schema';
 import axios from 'axios';
 import { AccountConfig } from 'src/account-config/schemas/account-config.schema';
+import { GetMyWinningDto } from './lucky-draw.dtos';
 
 @Injectable()
 export class LuckyDrawService {
@@ -46,6 +48,8 @@ export class LuckyDrawService {
                jackpotBallNumber: Math.floor(Math.random() * 10 + 1),
             },
             clientId,
+            _id: new mongoose.Types.ObjectId(),
+            createdAt: new Date(),
          };
       });
 
@@ -119,26 +123,30 @@ export class LuckyDrawService {
 
       if (response && !!response?.data && response?.data?.success) {
          let tickets = !!isManually
-            ? {
-                 ...userLotteryData?.[0],
-                 price: 0,
-                 isUsed: false,
-                 refundTicket: false,
-                 createdAt: new Date(),
-                 clientId,
-              }
+            ? [
+                 {
+                    ...userLotteryData?.[0],
+                    clientId,
+                    _id: new mongoose.Types.ObjectId(),
+                    createdAt: new Date(),
+                 },
+              ]
             : this.genrateUniqueNumbers(userId, numberOfTickets, clientId);
 
          let findLotterPollAndPlaceTicket = await this.lotteryUsers.updateOne(
             { gameId },
-            { $push: { lotteryParticipateUsers: tickets } },
+            {
+               $push: {
+                  lotteryParticipateUsers: tickets,
+               },
+            },
          );
 
          if (findLotterPollAndPlaceTicket.modifiedCount) {
             const responseData = responseObject(true, false, {
                message:
                   'Congratulations  your lottery ticket is placed. Good luck',
-               tickets: !!isManually ? userLotteryData : tickets,
+               tickets: !!isManually ? userLotteryData : tickets.reverse(),
             });
             return res.status(HttpStatus.OK).json(responseData);
          }
@@ -460,5 +468,230 @@ export class LuckyDrawService {
          message: 'No records found',
       });
       return res.status(HttpStatus.BAD_REQUEST).json(error);
+   }
+
+   async singleLuckyDrawUsersList(
+      data: SingleLuckyDrawUsersListDto,
+      res: Response,
+   ) {
+      const { gameId, filter, page } = data;
+
+      const isValidId = checkIsValidId(gameId);
+
+      if (!isValidId) {
+         const error = responseObject(false, true, {
+            message: 'Please provide valid gameId',
+         });
+         return res.status(HttpStatus.BAD_REQUEST).json(error);
+      }
+
+      const DOCUMENT_LIMIT = 30;
+      const findLottery = await this.lotteryUsers.aggregate([
+         { $match: { lotteryGameId: new mongoose.Types.ObjectId(gameId) } },
+         {
+            $project: {
+               createdAt: 1,
+               item: {
+                  $cond: {
+                     if: { $eq: [filter, 'participate'] },
+                     then: '$lotteryParticipateUsers',
+                     else: '$winners',
+                  },
+               },
+            },
+         },
+         { $addFields: { numberOfDocuments: { $size: '$item' } } },
+         { $unwind: { path: '$item', preserveNullAndEmptyArrays: true } },
+         { $sort: { 'item.createdAt': -1 } },
+         { $skip: page * DOCUMENT_LIMIT },
+         { $limit: DOCUMENT_LIMIT },
+         {
+            $project: {
+               'item.numberOfTickets': 1,
+               'item.lotteryNumbers': 1,
+               'item.price': {
+                  $cond: {
+                     if: { $eq: [{ $type: '$item.price' }, 'missing'] },
+                     then: '$$REMOVE',
+                     else: {
+                        $convert: {
+                           input: '$item.price',
+                           to: 'string',
+                        },
+                     },
+                  },
+               },
+               'item.isUsed': 1,
+               'item.refundTicket': 1,
+               'item._id': 1,
+               'item.createdAt': 1,
+               'item.userId': 1,
+               'item.clientId': 1,
+               numberOfDocuments: 1,
+            },
+         },
+         {
+            $group: {
+               _id: { _id: '$_id', numberOfDocuments: '$numberOfDocuments' },
+               lotteryData: {
+                  $push: {
+                     $cond: {
+                        if: {
+                           $ne: [{ $ifNull: ['$item.price', null] }, null],
+                        },
+                        then: '$item',
+                        else: '$$REMOVE',
+                     },
+                  },
+               },
+            },
+         },
+         { $project: { lottery: '$_id', _id: 0, lotteryData: 1 } },
+      ]);
+
+      const lotteryUserList = findLottery?.[0];
+
+      if (!lotteryUserList) {
+         const error = responseObject(false, true, {
+            message: 'No data found.',
+         });
+         return res.status(HttpStatus.NOT_FOUND).json(error);
+      }
+
+      const response = responseObject(true, false, {
+         items: lotteryUserList,
+         page: +page,
+         totalPages: Math.ceil(
+            lotteryUserList?.lottery?.numberOfDocuments / DOCUMENT_LIMIT - 1,
+         ),
+      });
+
+      return res.status(HttpStatus.OK).json(response);
+   }
+
+   async getLotteryResult(res: Response) {
+      const defaultGameId = +process.env.DEFAULT_LOTTERY_GAME_ID;
+      // find all create document number.
+      const findDocuments = await this.lotteryGame.countDocuments();
+      //find yesturday game id.
+      const yesturdayGameId = defaultGameId + findDocuments - 2;
+
+      const findLotterPoll = await this.lotteryGame.aggregate([
+         { $match: { gameId: { $eq: yesturdayGameId } } },
+         {
+            $project: {
+               gameId: 1,
+               lotteryPollResultTime: 1,
+               lotteryResult: 1,
+               lotteryResultShow: 1,
+               createdAt: 1,
+            },
+         },
+      ]);
+
+      const data = findLotterPoll?.[0] ? findLotterPoll?.[0] : [];
+
+      if (!data) {
+         const error = responseObject(false, true, { message: 'Not found' });
+         return res.status(HttpStatus.NOT_FOUND).json(error);
+      }
+
+      const responseData = responseObject(true, false, { item: data });
+      return res.status(HttpStatus.OK).json(responseData);
+   }
+
+   async getMyLotterywinning(data: GetMyWinningDto, res: Response) {
+      const { page, userId } = data;
+
+      const DOCUMENT_LIMIT = 10;
+
+      const countDocuments = await this.lotteryUsers.aggregate([
+         { $unwind: { path: '$winners', preserveNullAndEmptyArrays: true } },
+         { $match: { 'winners.userId': { $eq: userId } } },
+         { $group: { _id: null, count: { $sum: 1 } } },
+      ]);
+
+      const myWinnings = await this.lotteryUsers.aggregate([
+         { $unwind: { path: '$winners', preserveNullAndEmptyArrays: true } },
+         { $match: { 'winners.userId': { $eq: userId } } },
+         {
+            $project: {
+               _id: 1,
+               lotteryGameId: 1,
+               'winners.price': {
+                  $cond: {
+                     if: { $ne: [{ $ifNull: ['$winners.price', null] }, null] },
+                     then: {
+                        $convert: { input: '$winners.price', to: 'string' },
+                     },
+                     else: '$$REMOVE',
+                  },
+               },
+               'winners.lotteryNumbers': 1,
+               'winners.isUsed': 1,
+               'winners.createdAt': 1,
+               'winners.numberOfTickets': 1,
+               'winners.matches': 1,
+               'winners.jackpotBallNumberMatch': 1,
+               'winners.numbersMatches': {
+                  $cond: {
+                     if: { $gte: [{ $type: '$winners.matches' }, 'missing'] },
+                     then: '$$REMOVE',
+                     else: {
+                        $sum: [
+                           { $size: '$winners.matches' },
+                           {
+                              $cond: {
+                                 if: {
+                                    $gte: [
+                                       {
+                                          $type: '$winners.jackpotBallNumberMatch',
+                                       },
+                                       'missing',
+                                    ],
+                                 },
+                                 then: 0,
+                                 else: 1,
+                              },
+                           },
+                        ],
+                     },
+                  },
+               },
+            },
+         },
+         { $sort: { 'winners.price': -1 } },
+         { $skip: page * DOCUMENT_LIMIT },
+         { $limit: DOCUMENT_LIMIT },
+         {
+            $group: {
+               _id: '$winners.userId',
+               winners: {
+                  $push: {
+                     $cond: {
+                        if: { $eq: [{ $ifNull: ['$winners', {}] }, {}] },
+                        then: '$$REMOVE',
+                        else: '$winners',
+                     },
+                  },
+               },
+            },
+         },
+         { $project: { _id: 0, winnings: '$winners' } },
+      ]);
+
+      const winningData = myWinnings?.[0];
+
+      if (!winningData) {
+         const response = responseObject(false, true, { winningData: {} });
+         return res.status(HttpStatus.OK).json(response);
+      }
+
+      const response = responseObject(true, false, {
+         winningData,
+         page: +page,
+         totalPages: Math.ceil(countDocuments?.[0]?.count / DOCUMENT_LIMIT - 1),
+      });
+      return res.status(HttpStatus.OK).json(response);
    }
 }

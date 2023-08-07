@@ -8,8 +8,6 @@ export class ClientUtilsController {
 
    @Get('/integration')
    async integrationClient(@Query() query: ClientUtilsDto, @Res() res) {
-      console.log(query);
-
       return this.clientUtilsService.integrationClient(query, res);
    }
 }

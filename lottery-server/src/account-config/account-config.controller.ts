@@ -19,7 +19,7 @@ import { AccountConfigService } from './account-config.service';
 export class AccountConfigController {
    constructor(private readonly accountConfigService: AccountConfigService) {}
 
-   @Get()
+   @Get('/')
    async getAccountConfig(@Query() query: AccountConfigDto, @Res() res) {
       return this.accountConfigService.getAccountConfig(query, res);
    }

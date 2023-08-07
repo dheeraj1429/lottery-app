@@ -13,7 +13,9 @@ import { LuckyDrawService } from './lucky-draw.service';
 import {
    BuyLotteryTicketsDto,
    GetAllLotteryDrawDto,
+   GetMyWinningDto,
    GetSingleLotteryDrawDto,
+   SingleLuckyDrawUsersListDto,
    UpdateLotteryResultDto,
    getUserLotteryDtos,
 } from './dtos/lucky-draw.dtos';
@@ -33,6 +35,11 @@ export class LuckyDrawController {
    @Get('/get-user-lottery-tickets')
    async getUserLotteryTickets(@Query() query: getUserLotteryDtos, @Res() res) {
       return this.luckyDrawService.getUserLotteryTickets(query, res);
+   }
+
+   @Get('/get-my-lottery-winning')
+   async getMyLotterywinning(@Query() query: GetMyWinningDto, @Res() res) {
+      return this.luckyDrawService.getMyLotterywinning(query, res);
    }
 
    @Get('/get-all-lottery-draw')
@@ -75,6 +82,11 @@ export class LuckyDrawController {
       return this.luckyDrawService.lotteryUsersJackpotNumbers(query, res);
    }
 
+   @Get('/get-lottery-result')
+   async getLotteryResult(@Res() res) {
+      return this.luckyDrawService.getLotteryResult(res);
+   }
+
    @Post('/buy-lottery-tickets')
    async buyLotteryTickets(@Body() body: BuyLotteryTicketsDto, @Res() res) {
       return this.luckyDrawService.buyLotteryTickets(body, res);
@@ -85,5 +97,15 @@ export class LuckyDrawController {
    @UseGuards(RoleGuard)
    async updateLotteryResult(@Body() body: UpdateLotteryResultDto, @Res() res) {
       return this.luckyDrawService.updateLotteryResult(body, res);
+   }
+
+   @Get('/single-lucky-draw-users-lists')
+   @Roles('admin')
+   @UseGuards(RoleGuard)
+   async singleLuckyDrawUsersList(
+      @Query() query: SingleLuckyDrawUsersListDto,
+      @Res() res,
+   ) {
+      return this.luckyDrawService.singleLuckyDrawUsersList(query, res);
    }
 }

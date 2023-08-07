@@ -72,7 +72,7 @@ function TicketCard({ data }: { data: LotteryTicketInterface }) {
                control={control}
                render={({ field: { value } }) => (
                   <LotteryTicketBalls
-                     show={[1, 2, 3, 4, 5, 6]}
+                     // show={[1, 2, 3, 4, 5, 6]}
                      numbers={value}
                   />
                )}
