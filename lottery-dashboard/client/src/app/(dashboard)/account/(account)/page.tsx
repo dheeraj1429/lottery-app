@@ -35,8 +35,8 @@ const Row = [
    { heading: 'Options' },
 ];
 
-function page() {
-   const [page, setPage] = useState(0);
+function AccountPage() {
+   const [Page, setPage] = useState(0);
    const router = useRouter();
 
    const { data: session } = useSession();
@@ -65,10 +65,10 @@ function page() {
    useEffect(() => {
       if (!!session && session?.user && session?.user?._id) {
          dispatch(
-            getAllUsersAccounts({ page: page, userId: session?.user._id }),
+            getAllUsersAccounts({ page: Page, userId: session?.user._id }),
          );
       }
-   }, [session, page]);
+   }, [session, Page]);
 
    return (
       <div>
@@ -134,9 +134,9 @@ function page() {
                      prevHandler={prevHandler}
                      nextHandler={nextHandler}
                      nextAndPrev={true}
-                     disablePrevbtn={page === 0 ? true : false}
+                     disablePrevbtn={Page === 0 ? true : false}
                      disableNextbtn={
-                        page >= allAccounts?.totalPages ? true : false
+                        Page >= allAccounts?.totalPages ? true : false
                      }
                   ></NextAndPrevButtons>
                </TableContainer>
@@ -146,4 +146,4 @@ function page() {
    );
 }
 
-export default withRoles(page, ['admin']);
+export default withRoles(AccountPage, ['admin']);

@@ -35,4 +35,6 @@ function withRoles<T>(
    };
 }
 
+withRoles.displayname = 'roleName';
+
 export default withRoles;

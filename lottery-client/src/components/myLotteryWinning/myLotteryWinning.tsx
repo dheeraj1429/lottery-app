@@ -85,10 +85,10 @@ function MyLotteryWinning() {
                            <LotteryTicketRow
                               key={el?._id || idx + 'key'}
                               data={el}
-                              // matchResult={{
-                              //    luckyNumbers: el?.matches,
-                              //    jackpotBallNumber: el?.jackpotBallNumberMatch,
-                              // }}
+                              matchResult={{
+                                 luckyNumbers: el?.matches,
+                                 jackpotBallNumber: el?.jackpotBallNumberMatch,
+                              }}
                               showData={true}
                            />
                         ))}

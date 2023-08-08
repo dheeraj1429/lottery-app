@@ -45,6 +45,10 @@ export class TasksService {
     * @updateApiUrl (string): The URL of the API endpoint where the update request will be sent.
     * @returns A Promise that resolves to an object containing the response from the API call. The response object has the
     * following structure:
+    *
+    * This function relies on the Axios library for making HTTP requests.
+    * The function will return an object indicating an error if the updateApiUrl parameter is not provided.
+    * The function assumes that the API endpoint expects a JSON payload with the amountInUsd and userId properties.
     */
    async updateUserInformation(
       price: string,
