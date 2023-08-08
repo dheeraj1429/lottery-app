@@ -4,6 +4,7 @@ import LotteryRules from '@/components/lotteryRules/lotteryRules';
 import LotteryTabs from '@/components/lotteryTabs/lotteryTabs';
 import { SearchParams } from '.';
 import { InterigationApiResponse } from '@/types/interface';
+import { AuthRequiredException } from '@/lib/utils';
 
 const checkInterigation = async function (
    data: SearchParams,
@@ -31,7 +32,7 @@ export default async function Home({
    searchParams?: SearchParams;
 }) {
    if (!searchParams?.clientId || !searchParams?.userId) {
-      throw new Error(
+      throw new AuthRequiredException(
          `${
             (!searchParams?.clientId && 'Client id') ||
             (!searchParams?.userId && 'User id')
@@ -42,7 +43,7 @@ export default async function Home({
    const interigation = await checkInterigation(searchParams);
 
    if (!interigation?.success) {
-      throw new Error(`${interigation?.message}`);
+      throw new AuthRequiredException(`${interigation?.message}`);
    }
 
    return (

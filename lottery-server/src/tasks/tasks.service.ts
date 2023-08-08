@@ -76,7 +76,7 @@ export class TasksService {
     * @lottery A document representing the lottery game details.
     * @lotteryUsers A document containing information about users who participated in the lottery.
     *
-    * Output
+    * @Output
     * The function returns an object with two arrays:
     * refundTicketsArray: An array containing details of tickets eligible for a refund.
     * winnersTicketsArray: An array containing details of winning tickets and their associated prizes.

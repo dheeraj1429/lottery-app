@@ -5,4 +5,4 @@
 **/*.env.development
 **/*.build
 /DS_Store
-**/*next.config.js
+**/*.next.config.js

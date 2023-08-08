@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import classes from './error.module.css';
 
 export default function Error({
@@ -9,6 +10,10 @@ export default function Error({
    error: Error;
    reset: () => void;
 }) {
+   useEffect(() => {
+      console.log(error);
+   }, [error]);
+
    return (
       <div>
          <div className={classes['flex-container']}>
