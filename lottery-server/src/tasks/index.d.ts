@@ -12,3 +12,9 @@ export interface TicketsArrayInterface {
    matches?: number[];
    jackpotBallNumberMatch?: number;
 }
+export interface CompareMatchesInterface {
+   refundTicket: boolean;
+   matches: number[];
+   price?: string;
+   jackpotBallNumberMatch?: number;
+}

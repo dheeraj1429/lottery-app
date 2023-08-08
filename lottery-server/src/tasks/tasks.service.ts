@@ -53,15 +53,44 @@ export class TasksService {
       if (!updateApiUrl) {
          return { response: { success: false, error: true } };
       }
-
-      return { response: { success: true, error: false } };
    }
 
+   /**
+    * The updateLotteryResult function processes lottery participation data and updates user information
+    * based on the lottery results. It calculates refunds and prizes for participants, considering their
+    * matching numbers and the jackpot ball number.
+    * @lottery A document representing the lottery game details.
+    * @lotteryUsers A document containing information about users who participated in the lottery.
+    *
+    * Output
+    * The function returns an object with two arrays:
+    * refundTicketsArray: An array containing details of tickets eligible for a refund.
+    * winnersTicketsArray: An array containing details of winning tickets and their associated prizes.
+    *
+    * Prize Calculation and User Update: Depending on the number of matching numbers and whether the jackpot ball number matches,
+    * different prize amounts are calculated and the user's information is updated using the updateUserInformation function.
+    *
+    * Refund Calculation: If no matches are found and the jackpot ball number is not matched, the participant's ticket is
+    * eligible for a refund. This information is added to the refundTicketsArray.
+    *
+    * Winner Update: If the participant has matched 3, 4, or 5 numbers (with jackpot ball number match), their information is
+    * added to the winnersTicketsArray along with the prize details.
+    *
+    * Final Output: After processing all participants, the function returns the refundTicketsArray and winnersTicketsArray
+    * containing refund and winner details, respectively.
+    *
+    * Fallback: If either participants or lottery results are missing, the function returns empty arrays for both refunds and winners.
+    *
+    * The updateLotteryResult function efficiently processes lottery participation data, calculates refunds, and determines prizes
+    * for participants based on their matching numbers and jackpot ball number. It handles various scenarios and updates user
+    * information as necessary. The function plays a crucial role in managing the outcomes of a lottery game.
+    */
    async updateLotteryResult(
       lottery: LotteryGameSchemaDocument,
       lotteryUsers: LotteryUsersDocument,
    ) {
-      // if the user lottery & the user is not exists the return values.
+      // The function checks if both lotteryUsers and lottery documents exist. If not, it returns empty arrays for both
+      // refund and winners, indicating that no processing is necessary.
       if (!lotteryUsers && !lottery) {
          return {
             refundTicketsArray: [],
@@ -69,10 +98,13 @@ export class TasksService {
          };
       }
 
+      // Data Retrieval: It extracts the lotteryParticipateUsers array from the lotteryUsers document and the
+      // lotteryResult object from the lottery document.
+      // Processing Participants: If participants exist (lotteryParticipateUsers) and a lottery result is available (lotteryResult),
+      // the function iterates through each participant.
       const { lotteryParticipateUsers } = lotteryUsers;
       const { lotteryResult } = lottery;
 
-      // keep track user tickets values.
       const refundTicketsArray: TicketsArrayInterface[] = [];
       const winnersTicketsArray: TicketsArrayInterface[] = [];
 
@@ -81,39 +113,46 @@ export class TasksService {
       const hasLotterResult = !!lotteryResult;
 
       if (hasParticipants && hasLotterResult) {
-         // loop over the participants users and their tickets
          for (let i = 0; i < lotteryParticipateUsers?.length; i++) {
-            console.log(lotteryParticipateUsers[i]?.lotteryNumbers);
-            const { clientId } = lotteryParticipateUsers[i];
+            // Participant Details: For each participant, the function extracts relevant details, such as clientId,
+            // refundTicket, lotteryNumbers, numberOfTickets, and userId.
+            const {
+               clientId,
+               refundTicket,
+               lotteryNumbers,
+               numberOfTickets,
+               userId,
+            } = lotteryParticipateUsers[i];
 
-            // find the account config document which contains the user update information api url.
+            const { luckyNumbers, jackpotBallNumber } = lotteryNumbers;
+
             const accountConfig = await this.accountConfig.findOne(
                { clientId },
                { updateClientInformationApi: 1 },
             );
 
+            // Account Configuration Check: The function retrieves account configuration details for the participant's clientId and
+            // checks if the updateClientInformationApi property is available. If not, the participant is skipped.
             if (!accountConfig || !accountConfig?.updateClientInformationApi) {
                continue;
             }
 
-            const { luckyNumbers, jackpotBallNumber } =
-               lotteryParticipateUsers[i]?.lotteryNumbers;
-
-            // get the values from the participants users tickets.
-            const { numberOfTickets, userId } = lotteryParticipateUsers[i];
-
-            // hold the matching tickets numbers and the tickets
+            // Matching Numbers Calculation: The function compares the participant's lucky numbers with the winning luckyNumbers
+            // from the lottery result. Matching numbers are collected in the matchNumbers array.
             const matchNumbers: number[] = [];
 
-            console.log('--------- break -------');
-            // check if the lucky number of tickets matches or not.
             for (let j = 0; j < luckyNumbers.length; j++) {
                if (lotteryResult?.luckyNumbers.includes(luckyNumbers[j])) {
                   matchNumbers.push(luckyNumbers[j]);
                }
             }
 
-            console.log('matchNumbers =>', matchNumbers);
+            const defatulValues = {
+               lotteryNumbers,
+               numberOfTickets,
+               userId,
+               refundTicket,
+            };
 
             if (
                !matchNumbers.length &&
@@ -140,13 +179,14 @@ export class TasksService {
                   continue;
                }
 
-               winnersTicketsArray.push(
-                  Object.assign(lotteryParticipateUsers[i], {
-                     price,
-                     matches: matchNumbers,
-                     isUsed: true,
-                  }),
-               );
+               const updateObject = {
+                  ...defatulValues,
+                  price,
+                  isUsed: true,
+                  matches: matchNumbers,
+               };
+
+               winnersTicketsArray.push(updateObject);
             }
 
             if (matchNumbers.length === 4) {
@@ -162,13 +202,14 @@ export class TasksService {
                   continue;
                }
 
-               winnersTicketsArray.push(
-                  Object.assign(lotteryParticipateUsers[i], {
-                     price,
-                     isUsed: true,
-                     matches: matchNumbers,
-                  }),
-               );
+               const updateObject = {
+                  ...defatulValues,
+                  price,
+                  isUsed: true,
+                  matches: matchNumbers,
+               };
+
+               winnersTicketsArray.push(updateObject);
             }
 
             if (
@@ -176,7 +217,6 @@ export class TasksService {
                jackpotBallNumber === lotteryResult?.jackpotBallNumber
             ) {
                const price = (numberOfTickets * 100000).toFixed(2);
-               matchNumbers.push(lotteryResult?.jackpotBallNumber);
 
                const { response } = await this.updateUserInformation(
                   price,
@@ -188,14 +228,15 @@ export class TasksService {
                   continue;
                }
 
-               winnersTicketsArray.push(
-                  Object.assign(lotteryParticipateUsers[i], {
-                     price,
-                     isUsed: true,
-                     matches: matchNumbers,
-                     jackpotBallNumberMatch: lotteryResult?.jackpotBallNumber,
-                  }),
-               );
+               const updateObject = {
+                  ...defatulValues,
+                  price,
+                  isUsed: true,
+                  matches: matchNumbers,
+                  jackpotBallNumberMatch: lotteryResult?.jackpotBallNumber,
+               };
+
+               winnersTicketsArray.push(updateObject);
             }
          }
       } else {
@@ -243,7 +284,11 @@ export class TasksService {
          lotteryResultShow: false,
       }).save();
 
-      // console.log('createLotteryGame =>', createLotteryGame);
+      if (!createLotteryGame) {
+         throw new Error(
+            'Something worng happened while creating lottery game',
+         );
+      }
 
       // store the game numbers combination.
       const createNumberCombination = await new this.numberCombination({
@@ -252,7 +297,11 @@ export class TasksService {
          combinations,
       }).save();
 
-      // console.log('createNumberCombination =>', createNumberCombination);
+      if (!createNumberCombination) {
+         throw new Error(
+            'Something worng happened while creating number combination',
+         );
+      }
 
       // create the game user lobby.
       const createLotteryGameLobby = await new this.lotteryGameUsersModel({
@@ -262,16 +311,17 @@ export class TasksService {
          winners: [],
       }).save();
 
-      // console.log('createLotteryGameLobby =>', createLotteryGameLobby);
+      if (!createLotteryGameLobby) {
+         throw new Error(
+            'Something worng happened while create lottery gameLobby',
+         );
+      }
    }
 
    @Cron('*/3 * * * *')
    async handleCron() {
-      this.logger.debug('Called when the current second');
-
       const findDocuments = await this.lotteryGameModel.countDocuments();
       const defaultGameId = +process.env.DEFAULT_LOTTERY_GAME_ID;
-      // get the tomorrow date.
       const nextRoundDate = this.getTomorrowDate();
 
       // find the previous game information

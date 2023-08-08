@@ -11,7 +11,10 @@ import {
 
 interface Props {
    data: LotteryTicketsInterface;
-   matchResult?: lotteryNumbers;
+   matchResult?: {
+      luckyNumbers?: number[];
+      jackpotBallNumber?: number;
+   };
    showData?: boolean;
 }
 
@@ -79,7 +82,9 @@ function LotteryTicketRow({ data, matchResult, showData }: Props) {
                <div>
                   {!!data?.numbersMatches ? (
                      <div className="flex items-center space-x-1">
-                        <p>x{data?.numberOfTickets}</p>
+                        <p className="text-gray-200">
+                           x{data?.numberOfTickets}
+                        </p>
                      </div>
                   ) : null}
                </div>
@@ -96,7 +101,7 @@ function LotteryTicketRow({ data, matchResult, showData }: Props) {
                   {data?.numbersMatches}
                </p>
             ) : (
-               <p>x{data?.numberOfTickets}</p>
+               <p className="text-gray-200">x{data?.numberOfTickets}</p>
             )}
          </td>
          <td className={!!showData ? 'text-center' : 'text-end'}>

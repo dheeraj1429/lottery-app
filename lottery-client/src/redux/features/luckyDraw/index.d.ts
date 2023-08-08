@@ -31,6 +31,8 @@ export interface LotteryTicketsInterface {
    lotteryNumbers: lotteryNumbers;
    numbersMatches?: number;
    _id: string;
+   matches?: number[];
+   jackpotBallNumberMatch?: number;
 }
 export interface GetUserLotteryTicketsResponse extends ApiResponseInterface {
    page: number;
