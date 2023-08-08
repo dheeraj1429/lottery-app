@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const port = process.env.PORT;
 const usersData = require('./user');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 
@@ -39,7 +41,28 @@ app.post('/user/user-info', (req, res, next) => {
 });
 
 app.post('/user/update-user-price', (req, res, next) => {
-   console.log(req.body);
+   const { type, userId, amountInUsd } = req.body;
+
+   let updateUserPrice;
+   if (type === 'lotteryDrawResultPrice') {
+      updateUserPrice = usersData.map((el) =>
+         el?.userId === userId
+            ? { ...el, amountInUsd: el?.amountInUsd + +amountInUsd }
+            : el,
+      );
+   }
+
+   fs.writeFile(
+      path.join(__dirname, 'user.json'),
+      JSON.stringify(updateUserPrice),
+      function (err, data) {
+         if (err) {
+            console.log(err);
+         }
+         console.log(data);
+      },
+   );
+
    return res.status(200).json({
       success: true,
       error: false,

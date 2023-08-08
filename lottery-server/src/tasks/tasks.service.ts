@@ -58,6 +58,7 @@ export class TasksService {
       const response = await axios.post(updateApiUrl, {
          amountInUsd: price,
          userId: userId,
+         type: 'lotteryDrawResultPrice',
       });
 
       if (!!response && response?.data && response?.data?.success) {

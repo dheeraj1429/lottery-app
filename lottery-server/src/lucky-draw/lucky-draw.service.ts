@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Response, response } from 'express';
+import { Response } from 'express';
 import mongoose, { Model } from 'mongoose';
 import { LotteryGame } from 'src/tasks/schemas/lotteryGame.schema';
 import {
@@ -19,7 +19,7 @@ import {
 import { LotteryUsers } from 'src/tasks/schemas/lotteryUsers.schema';
 import axios from 'axios';
 import { AccountConfig } from 'src/account-config/schemas/account-config.schema';
-import { GetMyWinningDto } from './lucky-draw.dtos';
+import { GetMyWinningDto } from './dtos/lucky-draw.dtos';
 
 @Injectable()
 export class LuckyDrawService {
@@ -119,6 +119,7 @@ export class LuckyDrawService {
       }>(updateClientInformationApi, {
          amountInUsd: amount,
          userId: userId,
+         type: 'buyLotteryTickets',
       });
 
       if (response && !!response?.data && response?.data?.success) {
