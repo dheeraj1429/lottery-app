@@ -36,6 +36,16 @@ export class TasksService {
       return updatedTime;
    }
 
+   /**
+    * @updateUserInformation function is an asynchronous utility used to update user information, particularly the price and user ID,
+    * via an API endpoint. It sends a POST request to the specified API URL with the provided data and returns a response indicating the
+    * success or failure of the update operation.
+    * @price (string): The price or amount in USD to be updated for the user.
+    * @userId (string): The unique identifier of the user whose information is to be updated.
+    * @updateApiUrl (string): The URL of the API endpoint where the update request will be sent.
+    * @returns A Promise that resolves to an object containing the response from the API call. The response object has the
+    * following structure:
+    */
    async updateUserInformation(
       price: string,
       userId: string,
@@ -56,7 +66,7 @@ export class TasksService {
    }
 
    /**
-    * The updateLotteryResult function processes lottery participation data and updates user information
+    * @updateLotteryResult function processes lottery participation data and updates user information
     * based on the lottery results. It calculates refunds and prizes for participants, considering their
     * matching numbers and the jackpot ball number.
     * @lottery A document representing the lottery game details.
