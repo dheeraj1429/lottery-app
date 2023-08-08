@@ -5,7 +5,7 @@ function Error({ data }: Props) {
       <div>
          <div>
             {data.map((el) => (
-               <div className="text-center mb-2">
+               <div key={el} className="text-center mb-2">
                   <p className="text-sm text-red-500">{el}</p>
                </div>
             ))}

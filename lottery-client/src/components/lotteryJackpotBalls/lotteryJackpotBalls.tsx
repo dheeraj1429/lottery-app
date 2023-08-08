@@ -141,4 +141,5 @@ const LotteryJackpotBalls = forwardRef((_, ref) => {
    );
 });
 
+LotteryJackpotBalls.displayName = 'LotteryJackpotBalls';
 export default LotteryJackpotBalls;
