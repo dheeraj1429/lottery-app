@@ -51,6 +51,13 @@ app.post('/user/update-user-price', (req, res, next) => {
             : el,
       );
    }
+   if (type === 'buyLotteryTickets') {
+      updateUserPrice = usersData.map((el) =>
+         el?.userId === userId
+            ? { ...el, amountInUsd: el?.amountInUsd - +amountInUsd }
+            : el,
+      );
+   }
 
    fs.writeFile(
       path.join(__dirname, 'user.json'),
