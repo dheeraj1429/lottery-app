@@ -16,6 +16,26 @@ services:
       - "2001:2001"
     env_file:
       - './lottery-dashboard/client/.env'
+    environment:
+      - NEXT_APP_BACKEND_URL=http://lottery-server:10000
+    stdin_open: true
+    tty: true
+    volumes:
+      - './lottery-dashboard/client/src:/app/src'
+    depends_on:
+      - lottery-server
+  lottery-app-client:
+    build:
+      context: './lottery-client'
+      dockerfile: Dockerfile
+    ports:
+      - "2002:2002"
+    env_file:
+      - './lottery-client/.env'
+    environment:
+      - NEXT_APP_BACKEND_URL=http://lottery-server:10000
+    volumes:
+      - './lottery-client/src:/app/lottery-client'
     stdin_open: true
     tty: true
     depends_on:
