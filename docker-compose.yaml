@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  lottery-server:
+    build:
+      context: './lottery-server'
+      dockerfile: Dockerfile
+    env_file:
+      - "./lottery-server/.env"
+    ports:
+      - "10000:10000"
+  lottery-dashboard-client:
+    build:
+      context: './lottery-dashboard/client'
+      dockerfile: Dockerfile
+    ports:
+      - "2001:2001"
+    env_file:
+      - './lottery-dashboard/client/.env'
+    stdin_open: true
+    tty: true
+    depends_on:
+      - lottery-server
