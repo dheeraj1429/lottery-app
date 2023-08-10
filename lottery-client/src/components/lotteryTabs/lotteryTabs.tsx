@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import classes from './lotteryTabs.module.css';
 import {
    TabContainer,
@@ -11,6 +11,9 @@ import {
 import MyLotteryTickets from '../myLotteryTickets/myLotteryTickets';
 import LotteryResult from '../lotteryResult/lotteryResult';
 import MyLotteryWinning from '../myLotteryWinning/myLotteryWinning';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
+import { setSelectedTab } from '@/redux/features/client/userSlice';
+import { selectedTabSelector } from './lotteryTabs.selector';
 
 const buttonsAr = [
    { name: 'My Ticket' },
@@ -19,10 +22,11 @@ const buttonsAr = [
 ];
 
 function LotteryTabs() {
-   const [ShowTab, setShowTab] = useState('result');
+   const selectedTab = useAppSelector(selectedTabSelector);
+   const dispatch = useAppDispatch();
 
    const showTabHandler = function (type: string) {
-      setShowTab(type);
+      dispatch(setSelectedTab(type));
    };
 
    return (
@@ -32,7 +36,7 @@ function LotteryTabs() {
                {buttonsAr.map((el) => (
                   <TabsTrigger
                      active={
-                        ShowTab === el?.name.toLowerCase().replace(' ', '_')
+                        selectedTab === el?.name.toLowerCase().replace(' ', '_')
                      }
                      key={el?.name}
                      onClick={() =>
@@ -44,9 +48,9 @@ function LotteryTabs() {
                ))}
             </TabsList>
             <TabsContent className="p-2 bg-zinc-800 mt-2">
-               {ShowTab === 'my_ticket' && <MyLotteryTickets />}
-               {ShowTab === 'result' && <LotteryResult />}
-               {ShowTab === 'my_winnings' && <MyLotteryWinning />}
+               {selectedTab === 'my_ticket' && <MyLotteryTickets />}
+               {selectedTab === 'result' && <LotteryResult />}
+               {selectedTab === 'my_winnings' && <MyLotteryWinning />}
             </TabsContent>
          </TabContainer>
       </div>

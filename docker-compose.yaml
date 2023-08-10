@@ -40,3 +40,13 @@ services:
     tty: true
     depends_on:
       - lottery-server
+  lottery-demo-api-server:
+    build:
+      context: './demo-api-server'
+      dockerfile: Dockerfile
+    ports:
+      - "2000:2000"
+    env_file:
+      - './demo-api-server/.env'
+    depends_on:
+      - lottery-server

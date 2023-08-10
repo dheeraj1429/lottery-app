@@ -6,13 +6,17 @@ import Image from 'next/image';
 import LotteryBannerButton from '../lotteryBannerButton/lotteryBannerButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
-import { getTodayLottery } from '@/redux/features/luckyDraw/luckyDrawActions';
+import {
+   getLotteryResult,
+   getTodayLottery,
+} from '@/redux/features/luckyDraw/luckyDrawActions';
 import {
    todayLotterySelector,
    todayLotteryLoadingSelector,
    todayLotteryErrorSelector,
 } from './lotteryBanner.selector';
 import Error from '../common/error/error';
+import { setSelectedTab } from '@/redux/features/client/userSlice';
 
 function LotteryBanner() {
    const timerRef = useRef<HTMLDivElement>(null);
@@ -29,6 +33,9 @@ function LotteryBanner() {
       if (!timerRef?.current) return;
 
       if (remainingTime <= 0) {
+         dispatch(getTodayLottery());
+         dispatch(getLotteryResult());
+         dispatch(setSelectedTab('result'));
          return (timerRef.current.textContent = 'Lottery poll result show!');
       }
 

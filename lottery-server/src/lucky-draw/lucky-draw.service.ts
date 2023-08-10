@@ -661,7 +661,7 @@ export class LuckyDrawService {
                },
             },
          },
-         { $sort: { 'winners.price': -1 } },
+         { $sort: { 'winners.createdAt': -1 } },
          { $skip: page * DOCUMENT_LIMIT },
          { $limit: DOCUMENT_LIMIT },
          {

@@ -22,6 +22,7 @@ import {
 } from '../common/table/table';
 import LotteryTicketRow from '../lotteryTicketRow/lotteryTicketRow';
 import Button from '../common/button/button';
+import { removeMyWinningsLottery } from '@/redux/features/luckyDraw/luckyDrawSlice';
 
 const Row = [
    { heading: 'Numbers', cls: 'text-start' },
@@ -57,6 +58,10 @@ function MyLotteryWinning() {
             getMyLotteryWinning({ page: 0, userId: userInfo?.user?.userId }),
          );
       }
+
+      return () => {
+         dispatch(removeMyWinningsLottery());
+      };
    }, []);
 
    return (

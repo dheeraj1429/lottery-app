@@ -8,7 +8,7 @@ import {
 } from './luckyDrawActions';
 import { StateProps } from '.';
 
-const INITALSTATE: StateProps = {
+const INITIALSTATE: StateProps = {
    todayLottery: null,
    todayLotteryLoading: false,
    todayLotteryError: null,
@@ -31,7 +31,7 @@ const INITALSTATE: StateProps = {
 
 const luckyDrawSlice = createSlice({
    name: 'luckyDraw',
-   initialState: INITALSTATE,
+   initialState: INITIALSTATE,
    reducers: {
       removeTickets: (state) => {
          state.lotteryTicketInfo = null;
@@ -41,6 +41,12 @@ const luckyDrawSlice = createSlice({
       },
       showAndHideLotteryBuyPopUp: (state, action) => {
          state.showLotteryBuyPopUp = action.payload;
+      },
+      removeMyWinningsLottery: (state) => {
+         state.myWinnings = null;
+         state.myWinningsError = null;
+         state.myWinningsLoading = false;
+         state.myWinningsLoadMore = false;
       },
    },
    extraReducers: (bulder) => {
@@ -199,7 +205,10 @@ const luckyDrawSlice = createSlice({
    },
 });
 
-export const { removeTickets, showAndHideLotteryBuyPopUp } =
-   luckyDrawSlice.actions;
+export const {
+   removeTickets,
+   showAndHideLotteryBuyPopUp,
+   removeMyWinningsLottery,
+} = luckyDrawSlice.actions;
 
 export default luckyDrawSlice;

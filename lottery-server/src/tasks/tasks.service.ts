@@ -31,8 +31,8 @@ export class TasksService {
    private readonly logger = new Logger(TasksService.name);
 
    getTomorrowDate() {
-      var currentTime = new Date();
-      var updatedTime = new Date(currentTime.getTime() + 60000 * 3);
+      const currentTime = new Date();
+      const updatedTime = new Date(currentTime.getTime() + 60000 * 3);
       return updatedTime;
    }
 
@@ -125,9 +125,9 @@ export class TasksService {
 
       const hasParticipants =
          !!lotteryParticipateUsers && !!lotteryParticipateUsers?.length;
-      const hasLotterResult = !!lotteryResult;
+      const hasLotteryResult = !!lotteryResult;
 
-      if (hasParticipants && hasLotterResult) {
+      if (hasParticipants && hasLotteryResult) {
          for (let i = 0; i < lotteryParticipateUsers?.length; i++) {
             // Participant Details: For each participant, the function extracts relevant details, such as clientId,
             // refundTicket, lotteryNumbers, numberOfTickets, and userId.
@@ -162,7 +162,7 @@ export class TasksService {
                }
             }
 
-            const defatulValues = {
+            const defaultValues = {
                lotteryNumbers,
                numberOfTickets,
                userId,
@@ -195,7 +195,7 @@ export class TasksService {
                }
 
                const updateObject = {
-                  ...defatulValues,
+                  ...defaultValues,
                   price,
                   isUsed: true,
                   matches: matchNumbers,
@@ -218,7 +218,7 @@ export class TasksService {
                }
 
                const updateObject = {
-                  ...defatulValues,
+                  ...defaultValues,
                   price,
                   isUsed: true,
                   matches: matchNumbers,
@@ -244,7 +244,7 @@ export class TasksService {
                }
 
                const updateObject = {
-                  ...defatulValues,
+                  ...defaultValues,
                   price,
                   isUsed: true,
                   matches: matchNumbers,
