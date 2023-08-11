@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect } from 'react';
 import classes from './lotteryBanner.module.css';
-import Image from 'next/image';
 import LotteryBannerButton from '../lotteryBannerButton/lotteryBannerButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';

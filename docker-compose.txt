@@ -1,0 +1,20 @@
+# Docker Compose Configuration for Lottery Application
+
+This document provides a Docker Compose configuration to set up the Lottery Application, including a lottery server, dashboard client, app client, and a demo API server. The configuration is defined in the `docker-compose.yml` file.
+
+## Prerequisites
+
+Before proceeding, make sure you have the following installed on your system:
+
+- Docker: https://docs.docker.com/get-docker/
+- Docker Compose: https://docs.docker.com/compose/install/
+
+## Getting Started
+
+1. Clone the repository containing your Lottery Application codebase.
+
+2. Create a `.env` file for each service. Ensure that the necessary environment variables are set appropriately for each service. Sample `.env` files are provided in each service's directory.
+
+3. Open a terminal and navigate to the root directory of your cloned repository.
+
+4. Create a `docker-compose.yml` file in the root directory with the following content:

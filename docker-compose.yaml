@@ -8,6 +8,7 @@ services:
       - "./lottery-server/.env"
     ports:
       - "10000:10000"
+
   lottery-dashboard-client:
     build:
       context: './lottery-dashboard/client'
@@ -24,6 +25,7 @@ services:
       - './lottery-dashboard/client/src:/app/src'
     depends_on:
       - lottery-server
+
   lottery-app-client:
     build:
       context: './lottery-client'
@@ -40,6 +42,7 @@ services:
     tty: true
     depends_on:
       - lottery-server
+      
   lottery-demo-api-server:
     build:
       context: './demo-api-server'
