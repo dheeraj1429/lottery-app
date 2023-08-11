@@ -17,6 +17,20 @@ import {
 } from './lotteryBanner.selector';
 import Error from '../common/error/error';
 import { setSelectedTab } from '@/redux/features/client/userSlice';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+const settings = {
+   dots: false,
+   infinite: true,
+   arrows: false,
+   speed: 500,
+   slidesToShow: 1,
+   slidesToScroll: 1,
+   autoplay: true,
+   autoplaySpeed: 2000,
+};
 
 function LotteryBanner() {
    const timerRef = useRef<HTMLDivElement>(null);
@@ -67,34 +81,35 @@ function LotteryBanner() {
 
    return (
       <div>
-         <div className={classes['lottery-banner']}>
-            <Image
-               src="https://static.vecteezy.com/system/resources/previews/001/924/174/original/jackpot-casino-podium-golden-coins-banner-vector.jpg"
-               alt="lottery-banner"
-               width={150}
-               height={150}
-               className={classes['bg_image']}
-            />
-            <div className={classes['banner']}>
-               <div className={`${classes['center_div']} text-center`}>
-                  <div className={classes['timer_div']}>
-                     {!!todayLottery &&
-                        todayLottery?.success &&
-                        todayLottery?.item && (
-                           <h5
-                              ref={timerRef}
-                              className="text-lg md:text-2xl text-gray-100 font-bold tracking-tighter"
-                           ></h5>
-                        )}
-                     {!!todayLotteryLoading && (
-                        <CircularProgress size={'30px'} />
+         <div className={classes['bg_slider_main']}>
+            <div className={classes['main_slider_div']}>
+               <div className={classes['timer_div']}>
+                  {!!todayLottery &&
+                     todayLottery?.success &&
+                     todayLottery?.item && (
+                        <h5
+                           ref={timerRef}
+                           className="text-lg md:text-2xl text-gray-700 font-bold tracking-tighter text-center"
+                        ></h5>
                      )}
-                     {!!todayLotteryError && todayLotteryError?.message && (
-                        <Error data={todayLotteryError?.message} />
-                     )}
-                  </div>
+                  {!!todayLotteryLoading && <CircularProgress size={'30px'} />}
+                  {!!todayLotteryError && todayLotteryError?.message && (
+                     <Error data={todayLotteryError?.message} />
+                  )}
+                  <div className={`${classes['center_div']} text-center`}></div>
+                  <LotteryBannerButton />
                </div>
-               <LotteryBannerButton />
+               <Slider {...settings}>
+                  <div className={classes['banner_slider_div']}>
+                     <img src="/images/1.jpg" alt="lottery-banner" />
+                  </div>
+                  <div className={classes['banner_slider_div']}>
+                     <img src="/images/2.jpg" alt="lottery-banner" />
+                  </div>
+                  <div className={classes['banner_slider_div']}>
+                     <img src="/images/3.jpg" alt="lottery-banner" />
+                  </div>
+               </Slider>
             </div>
          </div>
       </div>
