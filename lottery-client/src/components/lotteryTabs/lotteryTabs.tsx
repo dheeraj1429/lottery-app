@@ -14,11 +14,13 @@ import MyLotteryWinning from '../myLotteryWinning/myLotteryWinning';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { setSelectedTab } from '@/redux/features/client/userSlice';
 import { selectedTabSelector } from './lotteryTabs.selector';
+import MyAllTickets from '../myAllTickets/myAllTickets';
 
 const buttonsAr = [
    { name: 'My Ticket' },
    { name: 'Result' },
    { name: 'My Winnings' },
+   { name: 'All Tickets' },
 ];
 
 function LotteryTabs() {
@@ -51,6 +53,7 @@ function LotteryTabs() {
                {selectedTab === 'my_ticket' && <MyLotteryTickets />}
                {selectedTab === 'result' && <LotteryResult />}
                {selectedTab === 'my_winnings' && <MyLotteryWinning />}
+               {selectedTab === 'all_tickets' && <MyAllTickets />}
             </TabsContent>
          </TabContainer>
       </div>

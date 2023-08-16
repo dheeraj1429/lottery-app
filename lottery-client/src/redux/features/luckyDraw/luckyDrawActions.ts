@@ -6,6 +6,7 @@ import {
    BuyLotteryTicketsPayload,
    BuyLotteryTicketsResponse,
    GetLotteryResultInterface,
+   GetMyAllLotteryTicketsInterface,
    GetMyLotteryWinningInterface,
    GetMyLotteryWinningPayload,
    GetTodayLotteryResponse,
@@ -115,6 +116,28 @@ export const getMyLotteryWinning = createAsyncThunk<
       try {
          const response = await axiosInstance.get(
             `/lucky-draw/get-my-lottery-winning?page=${page}&userId=${userId}`,
+         );
+         return response.data;
+      } catch (err) {
+         const error: AxiosError<KnownError> = err as any;
+         if (!error?.response) {
+            throw err;
+         }
+         return rejectWithValue(error?.response?.data);
+      }
+   },
+);
+
+export const getMyAllLotteryTickets = createAsyncThunk<
+   GetMyAllLotteryTicketsInterface,
+   GetMyLotteryWinningPayload,
+   { rejectValue: KnownError }
+>(
+   'luckyDraw/getMyAllLotteryTickets',
+   async ({ userId, page }, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(
+            `/lucky-draw/get-my-all-lottery-tickets?userId=${userId}&page=${page}`,
          );
          return response.data;
       } catch (err) {

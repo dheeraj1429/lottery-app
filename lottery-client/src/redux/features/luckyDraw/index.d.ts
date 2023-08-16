@@ -33,6 +33,7 @@ export interface LotteryTicketsInterface {
    _id: string;
    matches?: number[];
    jackpotBallNumberMatch?: number;
+   gameId?: number;
 }
 export interface GetUserLotteryTicketsResponse extends ApiResponseInterface {
    page: number;
@@ -92,6 +93,11 @@ export interface GetMyLotteryWinningInterface
       winnings: LotteryTicketsInterface[];
    };
 }
+export interface GetMyAllLotteryTicketsInterface
+   extends ApiResponseInterface,
+      PaginationResponse {
+   items: LotteryTicketsInterface[];
+}
 export interface StateProps {
    todayLottery: GetTodayLotteryResponse | null;
    todayLotteryLoading: boolean;
@@ -111,4 +117,8 @@ export interface StateProps {
    myWinningsLoading: boolean;
    myWinningsError: ErrorType;
    myWinningsLoadMore: boolean;
+   myAllLotteryTickets: GetMyAllLotteryTicketsInterface | null;
+   myAllLotteryTicketsLoading: boolean;
+   myAllLotteryTicketsError: ErrorType;
+   myAllLotteryTicketsLoadMore: boolean;
 }

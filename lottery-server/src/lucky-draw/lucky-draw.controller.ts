@@ -42,6 +42,11 @@ export class LuckyDrawController {
       return this.luckyDrawService.getMyLotterywinning(query, res);
    }
 
+   @Get('/get-my-all-lottery-tickets')
+   async getMyAllLotteryTickets(@Query() query: GetMyWinningDto, @Res() res) {
+      return this.luckyDrawService.getMyAllLotteryTickets(query, res);
+   }
+
    @Get('/get-all-lottery-draw')
    @Roles('admin')
    @UseGuards(RoleGuard)

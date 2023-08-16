@@ -4,10 +4,7 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import LotteryTicketBalls from '../lotteryTicketBalls/lotteryTicketBalls';
-import {
-   LotteryTicketsInterface,
-   lotteryNumbers,
-} from '@/redux/features/luckyDraw';
+import { LotteryTicketsInterface } from '@/redux/features/luckyDraw';
 
 interface Props {
    data: LotteryTicketsInterface;
@@ -16,9 +13,10 @@ interface Props {
       jackpotBallNumber?: number;
    };
    showData?: boolean;
+   showGameId?: boolean;
 }
 
-function LotteryTicketRow({ data, matchResult, showData }: Props) {
+function LotteryTicketRow({ data, matchResult, showData, showGameId }: Props) {
    const { setValue, control, getValues } = useForm({
       defaultValues: { lotteryNumbers: {}, matches: [] },
    });
@@ -105,9 +103,13 @@ function LotteryTicketRow({ data, matchResult, showData }: Props) {
             )}
          </td>
          <td className={!!showData ? 'text-center' : 'text-end'}>
-            <p className="text-gray-300">
-               {!!+data?.price ? `$${data?.price}` : '---'}
-            </p>
+            {!!showGameId ? (
+               <p className="text-gray-300">{data?.gameId}</p>
+            ) : (
+               <p className="text-gray-300">
+                  {!!+data?.price ? `$${data?.price}` : '---'}
+               </p>
+            )}
          </td>
          {!!showData && (
             <td className="text-end">

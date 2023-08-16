@@ -695,4 +695,67 @@ export class LuckyDrawService {
       });
       return res.status(HttpStatus.OK).json(response);
    }
+
+   async getMyAllLotteryTickets(query: GetMyWinningDto, res: Response) {
+      const { userId, page } = query;
+      const DOCUMENT_LIMIT = 10;
+
+      const unwindFilter = {
+         $unwind: {
+            path: '$lotteryParticipateUsers',
+            preserveNullAndEmptyArrays: false,
+         },
+      };
+
+      const matchFilter = {
+         $match: {
+            $and: [
+               { 'lotteryParticipateUsers.userId': userId },
+               { 'lotteryParticipateUsers.refundTicket': false },
+            ],
+         },
+      };
+
+      const documentCounts = await this.lotteryUsers.aggregate([
+         { ...unwindFilter },
+         { ...matchFilter },
+         { $count: 'totalDocuments' },
+      ]);
+
+      const lotteryTickets = await this.lotteryUsers.aggregate([
+         { ...unwindFilter },
+         { ...matchFilter },
+         { $sort: { createdAt: -1 } },
+         { $skip: +page * DOCUMENT_LIMIT },
+         { $limit: DOCUMENT_LIMIT },
+         {
+            $project: {
+               userId: '$lotteryParticipateUsers.userId',
+               numberOfTickets: '$lotteryParticipateUsers.numberOfTickets',
+               lotteryNumbers: '$lotteryParticipateUsers.lotteryNumbers',
+               isUsed: '$lotteryParticipateUsers.isUsed',
+               refundTicket: '$lotteryParticipateUsers.refundTicket',
+               createdAt: '$lotteryParticipateUsers.createdAt',
+               gameId: 1,
+            },
+         },
+      ]);
+
+      if (!lotteryTickets) {
+         const error = responseObject(false, true, {
+            message: 'No data found.',
+         });
+         return res.status(HttpStatus.NOT_FOUND).json(error);
+      }
+
+      const response = responseObject(true, false, {
+         items: lotteryTickets,
+         page: +page,
+         totalPages: Math.ceil(
+            documentCounts?.[0]?.totalDocuments / DOCUMENT_LIMIT - 1,
+         ),
+      });
+
+      return res.status(HttpStatus.OK).json(response);
+   }
 }

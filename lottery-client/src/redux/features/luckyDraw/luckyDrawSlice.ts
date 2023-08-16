@@ -5,6 +5,7 @@ import {
    buyLotteryTickets,
    getLotteryResult,
    getMyLotteryWinning,
+   getMyAllLotteryTickets,
 } from './luckyDrawActions';
 import { StateProps } from '.';
 
@@ -27,6 +28,10 @@ const INITIALSTATE: StateProps = {
    myWinningsLoading: false,
    myWinningsError: null,
    myWinningsLoadMore: false,
+   myAllLotteryTickets: null,
+   myAllLotteryTicketsLoading: false,
+   myAllLotteryTicketsError: null,
+   myAllLotteryTicketsLoadMore: false,
 };
 
 const luckyDrawSlice = createSlice({
@@ -201,6 +206,38 @@ const luckyDrawSlice = createSlice({
             state.myWinningsLoading = false;
             state.myWinningsError = null;
             state.myWinningsLoadMore = false;
+         });
+
+      bulder
+         .addCase(getMyAllLotteryTickets.pending, (state) => {
+            // state.myAllLotteryTickets = null;
+            state.myAllLotteryTicketsLoading = true;
+            state.myAllLotteryTicketsError = null;
+            state.myAllLotteryTicketsLoadMore = true;
+         })
+         .addCase(getMyAllLotteryTickets.rejected, (state, action) => {
+            state.myAllLotteryTickets = null;
+            state.myAllLotteryTicketsLoading = false;
+            state.myAllLotteryTicketsError = action.payload;
+            state.myAllLotteryTicketsLoadMore = false;
+         })
+         .addCase(getMyAllLotteryTickets.fulfilled, (state, action) => {
+            const { items } = action.payload;
+
+            if (
+               items &&
+               state.myAllLotteryTickets &&
+               state.myAllLotteryTickets?.items &&
+               state.myAllLotteryTickets?.items.length
+            ) {
+               state.myAllLotteryTickets.items =
+                  state.myAllLotteryTickets?.items.concat(items);
+            } else {
+               state.myAllLotteryTickets = action.payload;
+            }
+            state.myAllLotteryTicketsLoading = false;
+            state.myAllLotteryTicketsError = null;
+            state.myAllLotteryTicketsLoadMore = false;
          });
    },
 });
