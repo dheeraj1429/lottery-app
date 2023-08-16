@@ -76,6 +76,7 @@ export interface GetLotteryResultInterface extends ApiResponseInterface {
       lotteryResult: LotteryNumbersInterface;
       lotteryResultShow: boolean;
       createdAt: Date;
+      lotteryResultTime: Date;
    };
 }
 export interface GetResultLotteryWinnersInterface {

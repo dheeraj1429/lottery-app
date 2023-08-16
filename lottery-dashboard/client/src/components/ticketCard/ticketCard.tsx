@@ -51,7 +51,7 @@ function TicketCard({ data }: { data: LotteryTicketInterface }) {
                   <h2>{data?.gameId}</h2>
                   <h3>Game id</h3>
                   <small>
-                     Valid until
+                     Valid until{' '}
                      {dayjs(data?.lotteryResultTime).format(
                         'MMM DD hh:mm:ss A',
                      )}

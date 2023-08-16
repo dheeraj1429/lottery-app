@@ -84,7 +84,10 @@ function LotteryResult() {
          lotteryResultInfo?.success &&
          lotteryResultInfo?.item ? (
             <Fragment>
-               <LotteryHeading gameId={lotteryResultInfo?.item?.gameId} />
+               <LotteryHeading
+                  gameId={lotteryResultInfo?.item?.gameId}
+                  date={lotteryResultInfo?.item?.lotteryResultTime}
+               />
                <div className="flex items-center justify-center py-3">
                   <Controller
                      name="lotteryNumbers"

@@ -105,7 +105,7 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                }
 
                if (!jackpotBallNumber) {
-                  return toast.error('Jack pot ball is reuqired');
+                  return toast.error('Jack pot ball is required');
                }
 
                const userLotteryData = [

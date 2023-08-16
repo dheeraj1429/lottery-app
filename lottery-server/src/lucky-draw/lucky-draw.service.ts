@@ -582,7 +582,7 @@ export class LuckyDrawService {
          {
             $project: {
                gameId: 1,
-               lotteryPollResultTime: 1,
+               lotteryResultTime: 1,
                lotteryResult: 1,
                lotteryResultShow: 1,
                createdAt: 1,

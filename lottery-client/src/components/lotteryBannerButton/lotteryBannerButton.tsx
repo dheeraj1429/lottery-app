@@ -39,7 +39,7 @@ function LotteryBannerButton() {
             )}
          </AnimatePresence>
          <Button variation="tit_btn" onClick={showAndHideHandler}>
-            By tickets now
+            Buy tickets now
          </Button>
       </div>
    );
