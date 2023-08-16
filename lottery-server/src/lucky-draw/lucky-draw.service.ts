@@ -725,7 +725,7 @@ export class LuckyDrawService {
       const lotteryTickets = await this.lotteryUsers.aggregate([
          { ...unwindFilter },
          { ...matchFilter },
-         { $sort: { createdAt: -1 } },
+         { $sort: { 'lotteryParticipateUsers.createdAt': -1 } },
          { $skip: +page * DOCUMENT_LIMIT },
          { $limit: DOCUMENT_LIMIT },
          {

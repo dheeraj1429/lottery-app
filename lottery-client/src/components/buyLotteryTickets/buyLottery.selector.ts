@@ -14,3 +14,8 @@ export const todayLotterySelector = createSelector(
    [luckyDrawReducer],
    (luckyDrawSlice) => luckyDrawSlice.todayLottery,
 );
+
+export const buyLotteryTicketsLoadingSelector = createSelector(
+   [luckyDrawReducer],
+   (luckyDrawSlice) => luckyDrawSlice.buyLotteryTicketsLoading,
+);

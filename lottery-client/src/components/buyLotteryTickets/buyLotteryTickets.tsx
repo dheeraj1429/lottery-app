@@ -19,7 +19,11 @@ import Button from '../common/button/button';
 import LotteryJackpotBalls from '../lotteryJackpotBalls/lotteryJackpotBalls';
 import { toast } from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '@/redux/store/hooks';
-import { userSelector, todayLotterySelector } from './buyLottery.selector';
+import {
+   userSelector,
+   todayLotterySelector,
+   buyLotteryTicketsLoadingSelector,
+} from './buyLottery.selector';
 import { buyLotteryTickets } from '@/redux/features/luckyDraw/luckyDrawActions';
 import { BallsRefInterface, StateProps, Props } from '.';
 import { useSearchParams } from 'next/navigation';
@@ -44,6 +48,9 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
    const userInfo = useAppSelector(userSelector);
    const todayLottery = useAppSelector(todayLotterySelector);
    const dispatch = useAppDispatch();
+   const buyLotteryTicketsLoading = useAppSelector(
+      buyLotteryTicketsLoadingSelector,
+   );
 
    const inputChangeHandler = function (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -234,6 +241,7 @@ function BuyLotteryTickets({ close }: { close?: () => void }) {
                                  control={control}
                                  render={({ field: { value } }) => (
                                     <Button
+                                       isLoading={buyLotteryTicketsLoading}
                                        onClick={
                                           !!value
                                              ? () => submitHandler()
