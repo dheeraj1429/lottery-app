@@ -5,4 +5,5 @@
 **/*.env.development
 **/*.build
 /DS_Store
-.idea
+.
+**/*config-map.yaml

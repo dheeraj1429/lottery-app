@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lottery-dashboard-client-service
+spec:
+  selector:
+    app: lottery-dashboard-client
+    type: client
+  ports:
+    - protocol: TCP
+      port: 2001
+      targetPort: 2001
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lottery-dashboard-client
+  labels:
+    app: lottery-dashboard-client
+    type: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lottery-dashboard-client
+      type: client
+  template:
+    metadata:
+      labels:
+        app: lottery-dashboard-client
+        type: client
+    spec:
+      containers:
+        - name: lottery-dashboard-client
+          image: dheeraj1429/lottery-dashboard-client:v2
+          imagePullPolicy: Always
+          env:
+            - name: NEXT_APP_BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: NEXT_APP_BACKEND_URL
+            - name: NEXT_APP_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: NEXT_APP_SECRET
+          resources:
+            # limits:
+            #   memory: "128Mi"
+            #   cpu: "500m"
+            # requests:
+            #   memory: "64Mi"
+            #   cpu: "250m"

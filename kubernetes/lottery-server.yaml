@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lottery-server-service
+spec:
+  selector:
+    app: lotter-server
+    type: server
+  ports:
+    - protocol: TCP
+      port: 10000
+      targetPort: 10000
+  type: LoadBalancer
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lotter-server-dep
+  labels:
+    app: lotter-server-dep
+    type: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lotter-server
+      type: server
+  template:
+    metadata:
+      labels:
+        app: lotter-server
+        type: server
+    spec:
+      containers:
+        - name: lotter-server-container
+          image: dheeraj1429/lotter-server:v1
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "10000"
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: DATABASE_URL
+            - name: ACCESS_TOKEN_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: ACCESS_TOKEN_SECRET
+          resources:
+            # limits:
+            #   memory: 512Mi
+            #   cpu: "1"
+            # requests:
+            #   memory: 256Mi
+            #   cpu: "0.2"
