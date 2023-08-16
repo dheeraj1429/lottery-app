@@ -23,9 +23,7 @@ import { AccountConfig } from 'src/account-config/schemas/account-config.schema'
       ]),
    ],
 
-   providers: [
-      //TasksService
-   ],
+   providers: [TasksService],
 
    controllers: [],
 
