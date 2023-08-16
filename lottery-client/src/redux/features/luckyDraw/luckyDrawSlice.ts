@@ -53,6 +53,12 @@ const luckyDrawSlice = createSlice({
          state.myWinningsLoading = false;
          state.myWinningsLoadMore = false;
       },
+      removeAllMyTickets: (state) => {
+         state.myAllLotteryTickets = null;
+         state.myAllLotteryTicketsLoading = false;
+         state.myAllLotteryTicketsError = null;
+         state.myAllLotteryTicketsLoadMore = false;
+      },
    },
    extraReducers: (bulder) => {
       bulder
@@ -246,6 +252,7 @@ export const {
    removeTickets,
    showAndHideLotteryBuyPopUp,
    removeMyWinningsLottery,
+   removeAllMyTickets,
 } = luckyDrawSlice.actions;
 
 export default luckyDrawSlice;
